@@ -150,10 +150,10 @@ function appendSysMsg(text) {
 
 // Called by server when 2+ players are connected — re-inits game with correct player list
 function handleGameStart(data) {
-  window.PLAYER_LIST  = data.players.map(p => p.username);
-  const myIdx = PLAYER_LIST.indexOf(CURRENT_USER);
-  window.PLAYER_INDEX = myIdx >= 0 ? myIdx : 0;
-  window.gameReady    = true;
+  PLAYER_LIST  = data.players.map(p => p.username);
+  PLAYER_INDEX = PLAYER_LIST.indexOf(CURRENT_USER);
+  if (PLAYER_INDEX < 0) PLAYER_INDEX = 0;
+  window.gameReady = true;
   appendSysMsg(`🎮 Game started! ${PLAYER_LIST.join(' vs ')}`);
   if (typeof initGame === 'function') initGame();
 }
