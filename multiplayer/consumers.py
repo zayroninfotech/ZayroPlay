@@ -95,22 +95,19 @@ class GameConsumer(AsyncWebsocketConsumer):
 
     # ── Channel layer handlers ─────────────────────────────────────────────
     async def chat_message(self, event):
-        await self.send(text_data=json.dumps({'type': 'chat', **event}))
+        await self.send(text_data=json.dumps({**event, 'type': 'chat'}))
 
     async def game_state(self, event):
-        await self.send(text_data=json.dumps({'type': 'game_move', **event}))
+        await self.send(text_data=json.dumps({**event, 'type': 'game_move'}))
 
     async def game_event_broadcast(self, event):
-        await self.send(text_data=json.dumps({'type': 'game_event', **event}))
+        await self.send(text_data=json.dumps({**event, 'type': 'game_event'}))
 
     async def player_event(self, event):
-        await self.send(text_data=json.dumps({'type': 'player_event', **event}))
+        await self.send(text_data=json.dumps({**event, 'type': 'player_event'}))
 
     async def game_start_broadcast(self, event):
-        await self.send(text_data=json.dumps({
-            'type':    'game_start',
-            'players': event['players'],
-        }))
+        await self.send(text_data=json.dumps({**event, 'type': 'game_start'}))
 
     # ── DB helpers ─────────────────────────────────────────────────────────
     @database_sync_to_async
