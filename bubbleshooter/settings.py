@@ -25,7 +25,8 @@ SECRET_KEY = 'django-insecure-**+6xsa&p103_07p!nw2+bf$$wnfsv5vwzy0ik6ts*g+zxx%^a
 # SECURITY WARNING: don't run with debug turned on in production!
 import os
 DEBUG = os.environ.get('DJANGO_DEBUG', 'True') == 'True'
-ALLOWED_HOSTS = ['187.127.131.93', '187.127.131.93:8006', 'localhost', '127.0.0.1']
+
+ALLOWED_HOSTS = ['zayroplay.com', 'www.zayroplay.com', '187.127.131.93', '187.127.131.93:8006', 'localhost', '127.0.0.1']
 
 
 # Application definition
