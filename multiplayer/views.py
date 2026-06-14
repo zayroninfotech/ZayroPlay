@@ -51,9 +51,14 @@ def game_room(request, pk):
         'is_host': room.host == request.user,
     })
 
+SUPER_ADMINS = {'vamsi', 'zayron'}
+
 @login_required
 def delete_room(request, pk):
-    room = get_object_or_404(GameRoom, pk=pk, host=request.user)
+    if request.user.username in SUPER_ADMINS:
+        room = get_object_or_404(GameRoom, pk=pk)
+    else:
+        room = get_object_or_404(GameRoom, pk=pk, host=request.user)
     room.is_active = False
     room.save()
     return redirect('multi_lobby')
