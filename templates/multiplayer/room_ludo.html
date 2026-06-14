@@ -1,0 +1,5 @@
+{% extends 'base.html' %}
+{% block title %}Ludo – {{ room.name }}{% endblock %}
+{% block content %}
+{% include 'multiplayer/_room_shell.html' with game_js='ludo_mp.js' game_color='#f97316' %}
+{% endblock %}

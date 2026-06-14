@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "bubble-shooter",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["manage.py", "runserver", "8080"],
+      "port": 8080,
+      "cwd": "C:\\Zayron\\Games"
+    }
+  ]
+}

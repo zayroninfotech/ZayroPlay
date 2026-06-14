@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Candy Crush — ZayroPlay{% endblock %}
+
+{% block extra_css %}
+<style>
+  .game-page { padding-top: 90px; min-height: 100vh; }
+  #candyCanvas { cursor: pointer; border-radius: 16px; display: block;
+    box-shadow: 0 0 60px rgba(245,158,11,0.45), 0 0 120px rgba(239,68,68,0.15); }
+  .side-panel { display: flex; flex-direction: column; gap: 16px; }
+  .panel-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px; padding: 20px; backdrop-filter: blur(10px); }
+  .panel-card h6 { color: #fbbf24; font-family:'Orbitron',sans-serif; font-size:11px;
+    letter-spacing:2px; text-transform:uppercase; margin-bottom:12px; }
+  .stat-display { font-family:'Orbitron',sans-serif; font-size:32px; font-weight:900;
+    background:linear-gradient(135deg,#fbbf24,#ef4444); -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent; line-height:1; }
+  .stat-label-sm { color:#6b7280; font-size:12px; margin-top:4px; }
+  #cOverlay { position:absolute; inset:0; border-radius:16px; background:rgba(0,0,0,0.82);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:16px; z-index:10; backdrop-filter:blur(6px); }
+  #cOverlay h2 { font-family:'Orbitron',sans-serif; font-size:26px;
+    background:linear-gradient(90deg,#fbbf24,#ef4444,#ec4899);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+  .how-to li { color:#9ca3af; font-size:14px; margin-bottom:6px; }
+  .how-to li i { color:#fbbf24; width:20px; }
+  #cScoreForm input { background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15);
+    color:#fff; border-radius:10px; }
+  #cScoreForm input::placeholder { color:#6b7280; }
+  #cScoreForm input:focus { background:rgba(255,255,255,0.12); border-color:#fbbf24;
+    box-shadow:0 0 0 3px rgba(251,191,36,0.2); color:#fff; }
+  .moves-bar { height:8px; border-radius:4px; background:rgba(255,255,255,0.1);
+    overflow:hidden; margin-top:8px; }
+  .moves-fill { height:100%; background:linear-gradient(90deg,#fbbf24,#ef4444);
+    border-radius:4px; transition:width 0.3s; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="game-page">
+  <div class="container-fluid px-3 px-md-5">
+    <div class="row justify-content-center align-items-start g-4">
+
+      <!-- Left Panel -->
+      <div class="col-lg-2 col-md-12 order-2 order-lg-1">
+        <div class="side-panel">
+          <div class="panel-card text-center">
+            <h6><i class="bi bi-star-fill me-1"></i>Score</h6>
+            <div class="stat-display" id="cScoreDisplay">0</div>
+            <div class="stat-label-sm">points</div>
+          </div>
+          <div class="panel-card text-center">
+            <h6><i class="bi bi-layers me-1"></i>Level</h6>
+            <div class="stat-display" id="cLevelDisplay">1</div>
+            <div class="stat-label-sm">current level</div>
+          </div>
+          <div class="panel-card text-center">
+            <h6><i class="bi bi-arrow-left-right me-1"></i>Moves</h6>
+            <div class="stat-display" id="cMovesDisplay">30</div>
+            <div class="stat-label-sm">remaining</div>
+            <div class="moves-bar mt-2">
+              <div class="moves-fill" id="movesFill" style="width:100%"></div>
+            </div>
+          </div>
+          <div class="panel-card text-center">
+            <h6><i class="bi bi-bullseye me-1"></i>Target</h6>
+            <div class="stat-display" id="cTargetDisplay">500</div>
+            <div class="stat-label-sm">to beat level</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Canvas -->
+      <div class="col-lg-6 col-md-8 col-12 order-1 order-lg-2 d-flex justify-content-center">
+        <div class="position-relative">
+          <canvas id="candyCanvas" width="480" height="560"></canvas>
+          <div id="cOverlay">
+            <div class="text-center px-4">
+              <div style="font-size:64px;line-height:1">🍬</div>
+              <h2 class="mt-2" id="cOverlayTitle">Candy Crush</h2>
+              <p class="text-muted mt-2 mb-0" id="cOverlaySub">
+                Swap adjacent candies to match 3 or more in a row or column.<br>
+                Reach the target score before moves run out!
+              </p>
+            </div>
+            <div id="cScoreForm" class="w-100 px-4" style="display:none;max-width:320px;">
+              <div class="text-center mb-3">
+                <span class="fs-4 fw-bold text-warning" id="cFinalScore"></span>
+              </div>
+              <input type="text" id="cNameInput" class="form-control mb-2" maxlength="20" placeholder="Enter your name…"/>
+              <button class="btn w-100" style="background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff;border-radius:50px;font-weight:600;" id="cSubmitBtn">
+                <i class="bi bi-send me-2"></i>Submit Score
+              </button>
+              <div id="cSubmitResult" class="text-center mt-2 small"></div>
+            </div>
+            <div class="d-flex gap-3 flex-wrap justify-content-center">
+              <button class="btn px-4 py-2" style="background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff;border-radius:50px;font-weight:600;" id="cStartBtn">
+                <i class="bi bi-play-fill me-2"></i><span id="cStartLabel">Start Game</span>
+              </button>
+              <a href="{% url 'home' %}" class="btn btn-outline-glow px-4 py-2">
+                <i class="bi bi-house me-2"></i>Lobby
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Panel -->
+      <div class="col-lg-2 col-md-12 order-3">
+        <div class="side-panel">
+          <div class="panel-card">
+            <h6><i class="bi bi-question-circle me-1"></i>How to Play</h6>
+            <ul class="list-unstyled how-to mb-0">
+              <li><i class="bi bi-hand-index me-2"></i>Click a candy to select</li>
+              <li><i class="bi bi-arrow-left-right me-2"></i>Click adjacent to swap</li>
+              <li><i class="bi bi-grid-3x3 me-2"></i>Match 3+ in a row/col</li>
+              <li><i class="bi bi-arrow-down me-2"></i>Candies fall &amp; refill</li>
+              <li><i class="bi bi-star me-2"></i>Hit target to level up!</li>
+            </ul>
+          </div>
+          <div class="panel-card">
+            <h6><i class="bi bi-info-circle me-1"></i>Scoring</h6>
+            <ul class="list-unstyled how-to mb-0">
+              <li><i class="bi bi-circle-fill me-2" style="color:#4ade80"></i>3 match = 30 pts</li>
+              <li><i class="bi bi-circle-fill me-2" style="color:#fbbf24"></i>4 match = 80 pts</li>
+              <li><i class="bi bi-circle-fill me-2" style="color:#f472b6"></i>5 match = 150 pts</li>
+              <li><i class="bi bi-lightning-fill me-2" style="color:#38bdf8"></i>Cascade bonus!</li>
+            </ul>
+          </div>
+          <div class="panel-card text-center">
+            <h6><i class="bi bi-fire me-1"></i>Best Score</h6>
+            <div class="stat-display" id="cBestDisplay">—</div>
+            <div class="stat-label-sm">this session</div>
+          </div>
+          <div class="panel-card text-center">
+            <a href="{% url 'game' %}" class="btn btn-outline-glow w-100 mb-2">
+              <i class="bi bi-circle me-1"></i>Bubble Shooter — ZayroPlay
+            </a>
+            <a href="{% url 'leaderboard' %}?game=candy" class="btn btn-outline-glow w-100">
+              <i class="bi bi-trophy me-1"></i>Leaderboard
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/candy.js' %}"></script>
+{% endblock %}

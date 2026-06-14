@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block title %}Register – ZayroPlay{% endblock %}
+{% block content %}
+<div class="auth-wrap">
+  <div class="auth-card">
+    <div class="auth-logo">🕹️</div>
+    <h2 class="auth-title">Create Account</h2>
+    <p class="auth-sub">Join the multiplayer arena</p>
+    {% if messages %}
+      {% for msg in messages %}
+        <div class="auth-error">{{ msg }}</div>
+      {% endfor %}
+    {% endif %}
+    <form method="post">
+      {% csrf_token %}
+      <div class="auth-field">
+        <label>Username</label>
+        <input type="text" name="username" required placeholder="Choose a username">
+      </div>
+      <div class="auth-field">
+        <label>Email <span style="color:#475569">(optional)</span></label>
+        <input type="email" name="email" placeholder="you@example.com">
+      </div>
+      <div class="auth-field">
+        <label>Password</label>
+        <input type="password" name="password" required placeholder="At least 8 characters">
+      </div>
+      <div class="auth-field">
+        <label>Confirm Password</label>
+        <input type="password" name="password2" required placeholder="Repeat password">
+      </div>
+      <div class="auth-field">
+        <label>Pick Your Avatar</label>
+        <div class="avatar-grid">
+          {% for av in avatars %}
+            <label class="av-opt">
+              <input type="radio" name="avatar" value="{{ av }}" {% if forloop.first %}checked{% endif %} hidden>
+              <span>{{ av }}</span>
+            </label>
+          {% endfor %}
+        </div>
+      </div>
+      <button type="submit" class="auth-btn">Create Account →</button>
+    </form>
+    <p class="auth-link">Already have an account? <a href="{% url 'login' %}">Sign in</a></p>
+  </div>
+</div>
+<script>
+document.querySelectorAll('.av-opt').forEach(opt => {
+  opt.addEventListener('click', () => {
+    document.querySelectorAll('.av-opt').forEach(o => o.classList.remove('av-sel'));
+    opt.classList.add('av-sel');
+  });
+});
+</script>
+{% endblock %}

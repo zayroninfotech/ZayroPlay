@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}Profile – ZayroPlay{% endblock %}
+{% block content %}
+<div class="auth-wrap">
+  <div class="auth-card" style="max-width:520px">
+    <div class="auth-logo" style="font-size:3rem">{{ profile.avatar }}</div>
+    <h2 class="auth-title">{{ user.username }}</h2>
+    <p class="auth-sub">{{ user.email|default:"No email set" }}</p>
+
+    <div class="profile-stats">
+      <div class="pstat"><span class="pstat-val">{{ profile.wins }}</span><span class="pstat-lbl">Wins</span></div>
+      <div class="pstat"><span class="pstat-val">{{ profile.losses }}</span><span class="pstat-lbl">Losses</span></div>
+      <div class="pstat"><span class="pstat-val">{{ profile.win_rate }}%</span><span class="pstat-lbl">Win Rate</span></div>
+    </div>
+
+    <form method="post" style="margin-top:1.5rem">
+      {% csrf_token %}
+      <div class="auth-field">
+        <label>Choose Avatar</label>
+        <div class="avatar-grid">
+          {% for av in avatars %}
+            <label class="av-opt {% if av == profile.avatar %}av-sel{% endif %}">
+              <input type="radio" name="avatar" value="{{ av }}" {% if av == profile.avatar %}checked{% endif %} hidden>
+              <span>{{ av }}</span>
+            </label>
+          {% endfor %}
+        </div>
+      </div>
+      <button type="submit" class="auth-btn">Save Avatar</button>
+    </form>
+
+    <div style="margin-top:1.5rem;text-align:center">
+      <a href="{% url 'multi_lobby' %}" class="btn btn-outline-primary me-2">🎮 Play Multiplayer</a>
+      <a href="{% url 'logout' %}" class="btn btn-outline-danger">Logout</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

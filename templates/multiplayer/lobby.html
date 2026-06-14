@@ -1,0 +1,259 @@
+{% extends 'base.html' %}
+{% load game_tags %}
+{% block title %}Multiplayer Lobby – ZayroPlay{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ══ LOBBY PAGE ══════════════════════════════════════════════════════════════ */
+.lobby-page{padding-top:88px;min-height:100vh;background:#06040f}
+
+/* ── HERO BANNER ─────────────────────────────────────────────────────────── */
+.lb-hero{position:relative;padding:3.5rem 0 2.5rem;overflow:hidden;text-align:center}
+.lb-hero::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 60% at 50% 0%,#4c1d9520,transparent),
+             radial-gradient(ellipse 40% 40% at 20% 100%,#f9731610,transparent);
+  pointer-events:none}
+.lb-hero-eyebrow{display:inline-flex;align-items:center;gap:.5rem;background:#7c3aed22;border:1px solid #7c3aed55;border-radius:2rem;padding:.3rem 1rem;color:#a78bfa;font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:1rem}
+.lb-hero-title{font-family:'Orbitron',sans-serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;color:#fff;margin-bottom:.5rem}
+.lb-hero-title span{background:linear-gradient(135deg,#a78bfa,#f97316);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.lb-hero-sub{color:#64748b;font-size:.95rem;max-width:480px;margin:0 auto}
+
+/* ── GAME SELECTOR CARDS ─────────────────────────────────────────────────── */
+.game-selector{display:flex;gap:.75rem;flex-wrap:wrap;justify-content:center;margin:2rem 0 2.5rem}
+.gs-card{position:relative;background:#12102a;border:2px solid #1e1b4b;border-radius:1rem;padding:1.1rem 1.4rem;cursor:pointer;transition:all .25s;text-align:center;min-width:110px;user-select:none}
+.gs-card:hover{border-color:var(--c);background:color-mix(in srgb,var(--c) 10%,#12102a);transform:translateY(-3px);box-shadow:0 8px 24px color-mix(in srgb,var(--c) 20%,transparent)}
+.gs-card.active{border-color:var(--c);background:color-mix(in srgb,var(--c) 15%,#12102a);box-shadow:0 0 20px color-mix(in srgb,var(--c) 30%,transparent)}
+.gs-card.active::after{content:'✓';position:absolute;top:.4rem;right:.55rem;font-size:.65rem;color:var(--c);font-weight:900}
+.gs-emoji{font-size:1.8rem;display:block;margin-bottom:.3rem;filter:drop-shadow(0 0 8px var(--c))}
+.gs-name{font-family:'Orbitron',sans-serif;font-size:.7rem;font-weight:700;color:var(--c);white-space:nowrap}
+.gs-players{font-size:.65rem;color:#475569;margin-top:.15rem}
+
+/* ── CREATE ROOM ─────────────────────────────────────────────────────────── */
+.create-room-wrap{background:linear-gradient(135deg,#1a1535,#12102a);border:1px solid #4c1d9544;border-radius:1.25rem;padding:1.75rem 2rem;margin-bottom:2.5rem}
+.cr-top{display:flex;align-items:center;gap:.6rem;margin-bottom:1.25rem}
+.cr-top-icon{width:36px;height:36px;background:#7c3aed22;border:1px solid #7c3aed55;border-radius:.5rem;display:flex;align-items:center;justify-content:center;font-size:1.1rem}
+.cr-top-title{font-family:'Orbitron',sans-serif;font-size:1rem;color:#a78bfa;font-weight:700}
+.cr-form-row{display:flex;gap:.75rem;align-items:flex-end;flex-wrap:wrap}
+.cr-field{display:flex;flex-direction:column;gap:.35rem}
+.cr-label{font-size:.72rem;color:#7c3aed;font-weight:700;text-transform:uppercase;letter-spacing:.07em}
+.cr-select,.cr-input{background:#0d0b1e;border:1px solid #4c1d9555;border-radius:.65rem;padding:.65rem 1rem;color:#e2e8f0;font-size:.9rem;outline:none;transition:border .2s,box-shadow .2s}
+.cr-select:focus,.cr-input:focus{border-color:#7c3aed;box-shadow:0 0 0 3px #7c3aed25}
+.cr-input{flex:1;min-width:200px}
+.cr-submit{background:linear-gradient(135deg,#7c3aed,#a855f7);border:none;border-radius:.75rem;padding:.7rem 1.8rem;color:#fff;font-family:'Orbitron',sans-serif;font-size:.82rem;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:.5rem;white-space:nowrap;box-shadow:0 0 20px #7c3aed44;transition:all .25s}
+.cr-submit:hover{opacity:.88;transform:translateY(-2px);box-shadow:0 0 30px #7c3aed66}
+
+/* ── FILTER TABS ─────────────────────────────────────────────────────────── */
+.filter-row{display:flex;align-items:center;gap:.5rem;margin-bottom:1.5rem;flex-wrap:wrap}
+.filter-label{color:#475569;font-size:.78rem;font-weight:600;text-transform:uppercase;letter-spacing:.07em;margin-right:.25rem}
+.ftab{background:#12102a;border:1px solid #1e1b4b;border-radius:2rem;padding:.35rem .9rem;color:#64748b;font-size:.8rem;cursor:pointer;transition:all .2s;font-weight:600}
+.ftab:hover{border-color:#7c3aed55;color:#a78bfa}
+.ftab.active{background:#7c3aed22;border-color:#7c3aed;color:#a78bfa}
+
+/* ── ROOMS GRID ──────────────────────────────────────────────────────────── */
+.rooms-section-title{display:flex;align-items:center;gap:.75rem;margin-bottom:1.25rem}
+.rst-text{font-family:'Orbitron',sans-serif;font-size:.85rem;color:#64748b;font-weight:700}
+.rst-count{background:#7c3aed33;border:1px solid #7c3aed55;border-radius:1rem;padding:.15rem .6rem;font-size:.72rem;color:#a78bfa;font-weight:700}
+
+.rooms-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1.25rem}
+
+.room-card{background:#12102a;border:1px solid #1e1b4b;border-radius:1.1rem;overflow:hidden;transition:all .25s;position:relative}
+.room-card:hover{transform:translateY(-4px);border-color:var(--rc);box-shadow:0 10px 32px color-mix(in srgb,var(--rc) 20%,transparent)}
+.room-card-accent{height:4px;background:linear-gradient(90deg,var(--rc),color-mix(in srgb,var(--rc) 50%,transparent))}
+
+.rc-inner{padding:1.1rem 1.2rem}
+.rc-top{display:flex;align-items:center;gap:.75rem;margin-bottom:.85rem}
+.rc-game-icon{width:46px;height:46px;background:color-mix(in srgb,var(--rc) 15%,#0d0b1e);border:1px solid color-mix(in srgb,var(--rc) 40%,transparent);border-radius:.75rem;display:flex;align-items:center;justify-content:center;font-size:1.6rem;flex-shrink:0}
+.rc-info{flex:1;min-width:0}
+.rc-room-name{font-weight:700;color:#e2e8f0;font-size:.95rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rc-game-tag{font-size:.68rem;color:var(--rc);font-weight:700;text-transform:uppercase;letter-spacing:.07em;margin-top:.1rem}
+.rc-slots{display:flex;flex-direction:column;align-items:flex-end;flex-shrink:0}
+.rc-slot-num{font-family:'Orbitron',sans-serif;font-size:1.1rem;font-weight:900;color:var(--rc)}
+.rc-slot-lbl{font-size:.62rem;color:#475569;text-transform:uppercase;letter-spacing:.06em}
+
+.rc-mid{display:flex;align-items:center;gap:.5rem;margin-bottom:.85rem}
+.rc-host-tag{font-size:.75rem;color:#64748b}
+.rc-host-tag strong{color:#94a3b8}
+.rc-avatars{margin-left:auto;display:flex;gap:-.2rem}
+.rc-av{width:26px;height:26px;border-radius:50%;background:#1e1b4b;border:1.5px solid #4c1d95;display:flex;align-items:center;justify-content:center;font-size:.85rem;margin-left:-6px}
+.rc-av:first-child{margin-left:0}
+
+.rc-join{display:block;background:linear-gradient(135deg,var(--rc),color-mix(in srgb,var(--rc) 70%,#fff));border:none;border-radius:.65rem;padding:.6rem;color:#fff;text-align:center;text-decoration:none;font-weight:700;font-size:.85rem;transition:opacity .2s,transform .1s;cursor:pointer}
+.rc-join:hover{opacity:.85;transform:scale(1.02);color:#fff}
+.rc-full{display:block;background:#1e293b;border:1px solid #334155;border-radius:.65rem;padding:.55rem;color:#475569;text-align:center;font-size:.85rem;font-weight:600}
+
+/* ── HOST DELETE BTN ─────────────────────────────────────────────────────── */
+.rc-host-actions{display:flex;align-items:center;gap:.5rem;margin-left:auto}
+.rc-delete-btn{background:none;border:1px solid #ef444455;color:#ef4444;border-radius:.5rem;padding:.18rem .55rem;font-size:.7rem;cursor:pointer;transition:all .2s;white-space:nowrap}
+.rc-delete-btn:hover{background:#ef444420;border-color:#ef4444;box-shadow:0 0 10px #ef444433}
+
+/* ── WAITING STATE ───────────────────────────────────────────────────────── */
+.rc-waiting{display:flex;gap:.25rem;align-items:center;justify-content:center;margin-bottom:.6rem}
+.wdot{width:7px;height:7px;border-radius:50%;background:var(--rc);opacity:.4;animation:wdot .9s ease-in-out infinite}
+.wdot:nth-child(2){animation-delay:.2s}
+.wdot:nth-child(3){animation-delay:.4s}
+@keyframes wdot{0%,100%{opacity:.4;transform:scale(1)}50%{opacity:1;transform:scale(1.3)}}
+
+/* ── EMPTY STATE ─────────────────────────────────────────────────────────── */
+.no-rooms{grid-column:1/-1;text-align:center;padding:4rem 1rem}
+.no-rooms-icon{font-size:3.5rem;margin-bottom:1rem;opacity:.4}
+.no-rooms-text{color:#334155;font-size:.95rem;margin-bottom:1.5rem}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="lobby-page">
+<div class="container" style="max-width:1100px;padding-bottom:5rem">
+
+  <!-- HERO -->
+  <div class="lb-hero">
+    <div class="lb-hero-eyebrow"><i class="bi bi-broadcast-pin"></i> Live Multiplayer Arena</div>
+    <h1 class="lb-hero-title">🎮 <span>Multiplayer</span> Lobby</h1>
+    <p class="lb-hero-sub">Create a room or join an existing one — play live with friends in real-time</p>
+  </div>
+
+  <!-- GAME SELECTOR -->
+  <div class="game-selector">
+    {% for gkey, gmeta in game_meta.items %}
+    <div class="gs-card {% if forloop.first %}active{% endif %}"
+         style="--c:{{ gmeta.color }}"
+         onclick="selectGame('{{ gkey }}','{{ gmeta.color }}',this)">
+      <span class="gs-emoji">{{ gmeta.emoji }}</span>
+      <div class="gs-name">{{ gmeta.name }}</div>
+      <div class="gs-players">{{ gmeta.min }}–{{ gmeta.max }} players</div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- CREATE ROOM -->
+  <div class="create-room-wrap">
+    <div class="cr-top">
+      <div class="cr-top-icon">➕</div>
+      <div class="cr-top-title">Create New Room</div>
+    </div>
+    <form method="post">
+      {% csrf_token %}
+      <div class="cr-form-row">
+        <div class="cr-field">
+          <label class="cr-label">Game</label>
+          <select name="game_type" id="cr-game" class="cr-select" required>
+            {% for gkey, gmeta in game_meta.items %}
+              <option value="{{ gkey }}">{{ gmeta.emoji }} {{ gmeta.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="cr-field" style="flex:1">
+          <label class="cr-label">Room Name</label>
+          <input type="text" name="name" id="cr-name" class="cr-input" placeholder="e.g. Epic Chess Match" maxlength="60">
+        </div>
+        <button type="submit" class="cr-submit">🚀 Create Room</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- FILTER TABS -->
+  <div class="filter-row">
+    <span class="filter-label">Filter:</span>
+    <button class="ftab active" data-filter="all">All Rooms</button>
+    {% for gkey, gmeta in game_meta.items %}
+    <button class="ftab" data-filter="{{ gkey }}">{{ gmeta.emoji }} {{ gmeta.name }}</button>
+    {% endfor %}
+  </div>
+
+  <!-- ROOMS -->
+  <div class="rooms-section-title">
+    <span class="rst-text">ACTIVE ROOMS</span>
+    <span class="rst-count" id="roomCount">{{ rooms|length }}</span>
+  </div>
+
+  <div class="rooms-grid" id="rooms-grid">
+    {% for room in rooms %}
+    {% with gmeta=game_meta|get_item:room.game_type %}
+    <div class="room-card" data-game="{{ room.game_type }}" style="--rc:{{ gmeta.color }}">
+      <div class="room-card-accent"></div>
+      <div class="rc-inner">
+        <div class="rc-top">
+          <div class="rc-game-icon">{{ gmeta.emoji }}</div>
+          <div class="rc-info">
+            <div class="rc-room-name">{{ room.name }}</div>
+            <div class="rc-game-tag">{{ gmeta.name }}</div>
+          </div>
+          <div class="rc-slots">
+            <span class="rc-slot-num">{{ room.players.count }}/{{ room.max_players }}</span>
+            <span class="rc-slot-lbl">Players</span>
+          </div>
+        </div>
+        <div class="rc-mid">
+          <span class="rc-host-tag">Host: <strong>{{ room.host.username }}</strong></span>
+          <div class="rc-host-actions">
+            <div class="rc-avatars">
+              {% for p in room.players.all %}
+              <div class="rc-av" title="{{ p.username }}">{% if p.profile %}{{ p.profile.avatar }}{% else %}🎮{% endif %}</div>
+              {% endfor %}
+            </div>
+            {% if room.host == request.user %}
+            <form method="post" action="{% url 'delete_room' room.id %}" onsubmit="return confirm('Delete this room?')">
+              {% csrf_token %}
+              <button type="submit" class="rc-delete-btn" title="Delete room">🗑 Delete</button>
+            </form>
+            {% endif %}
+          </div>
+        </div>
+        {% if room.players.count < room.max_players %}
+        <div class="rc-waiting">
+          <div class="wdot"></div><div class="wdot"></div><div class="wdot"></div>
+          <span style="font-size:.7rem;color:#64748b;margin-left:.4rem">Waiting for players…</span>
+        </div>
+        <a href="{% url 'game_room' room.id %}" class="rc-join">▶ Join Game</a>
+        {% else %}
+        <span class="rc-full">🔒 Room Full</span>
+        {% endif %}
+      </div>
+    </div>
+    {% endwith %}
+    {% empty %}
+    <div class="no-rooms">
+      <div class="no-rooms-icon">🎮</div>
+      <div class="no-rooms-text">No active rooms yet.<br>Create one above and invite friends!</div>
+      <button onclick="document.getElementById('cr-name').focus()" class="cr-submit" style="margin:0 auto">➕ Create First Room</button>
+    </div>
+    {% endfor %}
+  </div>
+
+</div>
+</div>
+
+<script>
+// Game selector click
+function selectGame(key, color, el) {
+  document.querySelectorAll('.gs-card').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('cr-game').value = key;
+  const names = { {% for gkey, gmeta in game_meta.items %}'{{ gkey }}':'{{ gmeta.name }}',{% endfor %} };
+  document.getElementById('cr-name').placeholder = `Epic ${names[key] || ''} Match`;
+}
+
+// Filter tabs
+document.querySelectorAll('.ftab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.ftab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const f = btn.dataset.filter;
+    let visible = 0;
+    document.querySelectorAll('.room-card').forEach(card => {
+      const show = f === 'all' || card.dataset.game === f;
+      card.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+    document.getElementById('roomCount').textContent = visible;
+  });
+});
+
+// Sync game selector → dropdown
+document.getElementById('cr-game').addEventListener('change', function () {
+  document.querySelectorAll('.gs-card').forEach(c => {
+    c.classList.toggle('active', c.querySelector('.gs-name').textContent.trim() ===
+      this.options[this.selectedIndex].text.trim().replace(/^.\s/,''));
+  });
+});
+</script>
+{% endblock %}

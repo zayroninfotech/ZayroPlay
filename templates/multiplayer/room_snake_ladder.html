@@ -1,0 +1,5 @@
+{% extends 'base.html' %}
+{% block title %}Snake & Ladder – {{ room.name }}{% endblock %}
+{% block content %}
+{% include 'multiplayer/_room_shell.html' with game_js='snake_ladder_mp.js' game_color='#10b981' %}
+{% endblock %}

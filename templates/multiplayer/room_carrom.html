@@ -1,0 +1,5 @@
+{% extends 'base.html' %}
+{% block title %}Carrom Board – {{ room.name }}{% endblock %}
+{% block content %}
+{% include 'multiplayer/_room_shell.html' with game_js='carrom_mp.js' game_color='#f59e0b' %}
+{% endblock %}

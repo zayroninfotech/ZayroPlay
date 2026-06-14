@@ -1,0 +1,76 @@
+<!-- Room Shell – shared layout for all multiplayer game rooms -->
+<div class="room-wrap">
+
+  <!-- Header bar -->
+  <div class="room-header">
+    <div class="rh-left">
+      <a href="{% url 'multi_lobby' %}" class="rh-back">← Lobby</a>
+      <span class="rh-emoji">{{ meta.emoji }}</span>
+      <span class="rh-title">{{ room.name }}</span>
+    </div>
+    <div class="rh-players">
+      {% for p in player_list %}
+        <div class="rh-avatar {% if p == request.user %}rh-me{% endif %}" title="{{ p.username }}">
+          {{ p.profile.avatar|default:'🎮' }}
+          <span class="rh-uname">{{ p.username }}</span>
+        </div>
+      {% endfor %}
+    </div>
+    <div class="rh-right">
+      {% if is_host %}<span class="rh-host-badge">👑 Host</span>{% endif %}
+      <a href="{% url 'leave_room' room.id %}" class="rh-leave">Leave</a>
+    </div>
+  </div>
+
+  <!-- Main area: game canvas + chat -->
+  <div class="room-body">
+
+    <!-- Game canvas -->
+    <div class="room-game" id="game-area">
+      <canvas id="gameCanvas"></canvas>
+      <div id="game-overlay" class="game-overlay hidden">
+        <div class="go-content">
+          <div id="go-title" class="go-title"></div>
+          <div id="go-msg"   class="go-msg"></div>
+          <button id="go-btn" class="go-btn" onclick="gameOverlayAction()">Play Again</button>
+        </div>
+      </div>
+      <div id="game-status" class="game-status"></div>
+    </div>
+
+    <!-- Chat panel -->
+    <div class="room-chat" id="chat-panel">
+      <div class="chat-header">💬 Room Chat</div>
+      <div class="chat-messages" id="chat-messages">
+        {% for msg in messages %}
+          <div class="chat-msg">
+            <span class="cm-av">{{ msg.user.profile.avatar|default:'🎮' }}</span>
+            <div class="cm-body">
+              <span class="cm-user">{{ msg.user.username }}</span>
+              <span class="cm-time">{{ msg.timestamp|time:"H:i" }}</span>
+              <div class="cm-text">{{ msg.content }}</div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      <div class="chat-input-wrap">
+        <input id="chat-input" type="text" placeholder="Type a message…" maxlength="500" autocomplete="off">
+        <button id="chat-send">Send</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Hidden room data for JS -->
+<script>
+  const ROOM_ID      = "{{ room.id }}";
+  const CURRENT_USER = "{{ request.user.username }}";
+  const PLAYER_INDEX = {{ player_index }};
+  const PLAYER_LIST  = [{% for p in player_list %}"{{ p.username }}"{% if not forloop.last %},{% endif %}{% endfor %}];
+  const IS_HOST      = {{ is_host|yesno:"true,false" }};
+  const GAME_TYPE    = "{{ room.game_type }}";
+  const WS_URL       = `ws://${location.host}/ws/room/${ROOM_ID}/`;
+</script>
+<script src="/static/js/room_core.js"></script>
+<script src="/static/js/{{ game_js }}"></script>

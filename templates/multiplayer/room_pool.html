@@ -1,0 +1,5 @@
+{% extends 'base.html' %}
+{% block title %}8 Ball Pool – {{ room.name }}{% endblock %}
+{% block content %}
+{% include 'multiplayer/_room_shell.html' with game_js='pool_mp.js' game_color='#06b6d4' %}
+{% endblock %}
