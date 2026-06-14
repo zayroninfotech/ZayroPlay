@@ -28,6 +28,12 @@ DEBUG = os.environ.get('DJANGO_DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = ['zayroplay.com', 'www.zayroplay.com', '187.127.131.93', '187.127.131.93:8006', 'localhost', '127.0.0.1']
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://zayroplay.com',
+    'https://www.zayroplay.com',
+    'http://187.127.131.93:8006',
+]
+
 
 # Application definition
 
