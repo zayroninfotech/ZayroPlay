@@ -1,5 +1,43 @@
 {% extends 'base.html' %}
 {% block title %}Chess – {{ room.name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ── Chess Player Panels ─────────────────────────────────────────── */
+.chess-panel {
+  display: flex; align-items: center; gap: .75rem;
+  background: #12102a; border: 1px solid #1e1b4b;
+  border-radius: .75rem; padding: .55rem 1rem;
+  margin-bottom: .4rem; min-height: 48px;
+}
+.chess-panel.me    { margin-top: .4rem; margin-bottom: 0; }
+.chess-panel-av    { font-size: 1.4rem; }
+.chess-panel-name  { font-weight: 700; color: #e2e8f0; font-size: .9rem; }
+.chess-panel-color { font-size: .7rem; color: #64748b; margin-left: .3rem; }
+.chess-panel-caps  { display: flex; flex-wrap: wrap; gap: 1px; margin-left: auto;
+                     font-size: .85rem; opacity: .85; min-width: 80px; }
+.chess-panel-score { font-family: 'Orbitron',sans-serif; font-size: .8rem;
+                     color: #a78bfa; margin-left: .5rem; font-weight: 700; }
+/* Check badge */
+.chess-check-badge { background: #ef4444; color: #fff; font-size: .65rem;
+                     font-weight: 800; border-radius: .3rem; padding: .1rem .4rem;
+                     margin-left: .4rem; animation: pulse-red .6s infinite alternate; }
+@keyframes pulse-red { to { opacity: .5; } }
+/* Move history */
+.chess-moves { background: #0d0b1e; border: 1px solid #1e1b4b; border-radius: .65rem;
+               padding: .5rem .75rem; margin-top: .5rem; max-height: 110px;
+               overflow-y: auto; font-size: .75rem; color: #94a3b8; }
+.chess-move-row { display: flex; gap: .5rem; padding: .1rem 0; }
+.chess-move-num  { color: #475569; min-width: 24px; }
+.chess-move-w, .chess-move-b { flex: 1; padding: .1rem .3rem; border-radius: .25rem;
+                                cursor: default; }
+.chess-move-w:hover, .chess-move-b:hover { background: #1e1b4b; }
+.chess-move-latest { background: #7c3aed33 !important; color: #c4b5fd; }
+/* Canvas wrapper */
+#chess-canvas-wrap { position: relative; }
+</style>
+{% endblock %}
+
 {% block content %}
 {% include 'multiplayer/_room_shell.html' with game_js='chess_mp.js' game_color='#8b5cf6' %}
 {% endblock %}
