@@ -6,25 +6,29 @@ canvas.width = 560; canvas.height = 560;
 const GRID = 10;
 const SZ = canvas.width / GRID;
 
-// Snakes: head → tail
-const SNAKES = {97:78,95:56,88:24,76:37,74:53,62:19,49:11,46:25,16:6};
-// Ladders: bottom → top
+const SNAKES  = {97:78,95:56,88:24,76:37,74:53,62:19,49:11,46:25,16:6};
 const LADDERS = {2:38,7:14,8:31,15:26,21:42,28:84,36:44,51:67,71:91,78:98,87:94};
 
 const PLAYER_COLORS = ['#ef4444','#22c55e','#3b82f6','#f59e0b'];
 
 let positions, currentPlayer, myTurn, diceVal, gameActive, rolling;
+window.gameReady = false;
 
 function initGame() {
-  positions = PLAYER_LIST.map(() => 0);
+  positions = Array.from({length: Math.max(PLAYER_LIST.length, 2)}, () => 0);
   currentPlayer = 0;
+  myTurn = false; diceVal = null; gameActive = true; rolling = false;
+
+  if (!window.gameReady) {
+    draw();
+    setStatus('⏳ Waiting for opponent to join…');
+    return;
+  }
   myTurn = PLAYER_INDEX === 0;
-  diceVal = null; gameActive = true; rolling = false;
   draw(); updateStatus();
 }
 
 function cellRect(cell) {
-  // cell 1 = bottom-left, 100 = top-right
   const idx = cell - 1;
   const row = GRID - 1 - Math.floor(idx / GRID);
   const rowFromBottom = Math.floor(idx / GRID);
@@ -40,7 +44,6 @@ function cellCenter(cell) {
 function draw() {
   ctx.clearRect(0,0,canvas.width,canvas.height);
 
-  // Board squares
   for(let r=0;r<GRID;r++) for(let c=0;c<GRID;c++) {
     const even=(r+c)%2===0;
     ctx.fillStyle = even ? '#1e1b4b' : '#2d1b69';
@@ -49,7 +52,6 @@ function draw() {
     ctx.strokeRect(c*SZ,r*SZ,SZ,SZ);
   }
 
-  // Cell numbers
   ctx.font=`bold ${SZ*.22}px sans-serif`;
   ctx.textAlign='center'; ctx.textBaseline='top';
   for(let cell=1;cell<=100;cell++) {
@@ -58,7 +60,6 @@ function draw() {
     ctx.fillText(cell, x+SZ/2, y+2);
   }
 
-  // Draw snakes
   Object.entries(SNAKES).forEach(([head,tail]) => {
     const h=cellCenter(+head), t=cellCenter(+tail);
     ctx.save();
@@ -71,7 +72,6 @@ function draw() {
     ctx.moveTo(h.x,h.y);
     ctx.quadraticCurveTo(mx,my,t.x,t.y);
     ctx.stroke();
-    // Snake head
     ctx.fillStyle='#ef4444';
     ctx.beginPath(); ctx.arc(h.x,h.y,10,0,Math.PI*2); ctx.fill();
     ctx.fillStyle='#fff'; ctx.font='14px serif';
@@ -80,7 +80,6 @@ function draw() {
     ctx.restore();
   });
 
-  // Draw ladders
   Object.entries(LADDERS).forEach(([bot,top]) => {
     const b=cellCenter(+bot), t=cellCenter(+top);
     ctx.save();
@@ -88,11 +87,9 @@ function draw() {
     ctx.lineWidth=5;
     ctx.lineCap='round';
     ctx.setLineDash([]);
-    // Two rails
-    const dx=12,dy=0;
+    const dx=12;
     ctx.beginPath(); ctx.moveTo(b.x-dx,b.y); ctx.lineTo(t.x-dx,t.y); ctx.stroke();
     ctx.beginPath(); ctx.moveTo(b.x+dx,b.y); ctx.lineTo(t.x+dx,t.y); ctx.stroke();
-    // Rungs
     const steps=5;
     for(let i=0;i<=steps;i++){
       const pct=i/steps;
@@ -106,7 +103,6 @@ function draw() {
     ctx.restore();
   });
 
-  // Draw player tokens
   PLAYER_LIST.forEach((name, pi) => {
     const pos = positions[pi];
     if(pos===0) return;
@@ -123,7 +119,6 @@ function draw() {
     ctx.fillText(pi+1,tx,ty);
   });
 
-  // Dice
   if(myTurn && currentPlayer===PLAYER_INDEX) drawDice();
 }
 
@@ -151,7 +146,7 @@ function drawDice() {
 }
 
 function rollDice() {
-  if(!myTurn||rolling||!gameActive||diceVal) return;
+  if(!window.gameReady||!myTurn||rolling||!gameActive||diceVal) return;
   rolling=true;
   SFX.dice();
   let t=0;
@@ -207,6 +202,7 @@ function updateStatus() {
 }
 
 function onGameMove(data) {
+  if (data.username === CURRENT_USER) return; // ignore our own echo
   const {action}=data.move;
   if(action==='roll'){
     diceVal=data.move.value;

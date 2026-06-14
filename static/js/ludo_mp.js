@@ -3,27 +3,22 @@ const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 canvas.width = 600; canvas.height = 600;
 
-const N = 15; // grid cells
+const N = 15;
 const SZ = canvas.width / N;
 
 const PLAYER_COLORS = ['#ef4444','#22c55e','#3b82f6','#f59e0b'];
 const PLAYER_NAMES  = ['Red','Green','Blue','Yellow'];
 
-// Home positions (top-left corner of each home quadrant)
 const HOMES = [
-  {r:0,c:0},   // Red
-  {r:0,c:9},   // Green
-  {r:9,c:9},   // Blue
-  {r:9,c:0},   // Yellow
+  {r:0,c:0},
+  {r:0,c:9},
+  {r:9,c:9},
+  {r:9,c:0},
 ];
 
-// Safe cells on the path (board positions)
 const SAFE = new Set([1,9,14,22,27,35,40,48]);
 
-// 52-cell path for Red (others are offset by 13 each)
 function buildPath() {
-  const cells = [];
-  // Red path starts at (6,1)
   const raw = [
     [6,1],[6,2],[6,3],[6,4],[6,5],
     [5,6],[4,6],[3,6],[2,6],[1,6],[0,6],
@@ -42,21 +37,27 @@ function buildPath() {
 }
 const PATH = buildPath();
 
-// Token start positions (off board = index -1)
-// Each player has 4 tokens
-let tokens; // tokens[player][token] = {pos: -1..51, finished:false}
+let tokens;
 let diceValue = null;
 let myTurn = false;
 let currentPlayer;
 let gameActive = true;
 let rolling = false;
+window.gameReady = false;
 
 function initGame() {
-  tokens = PLAYER_LIST.map(() =>
+  const numPlayers = Math.max(PLAYER_LIST.length, 2);
+  tokens = Array.from({length: numPlayers}, () =>
     Array.from({length:4}, () => ({pos:-1, finished:false}))
   );
   currentPlayer = 0;
   diceValue = null; myTurn = false; gameActive = true; rolling = false;
+
+  if (!window.gameReady) {
+    draw();
+    setStatus('⏳ Waiting for opponent to join…');
+    return;
+  }
   myTurn = currentPlayer === PLAYER_INDEX;
   draw();
   updateStatus();
@@ -67,21 +68,16 @@ function cellCenter(r, c) {
 }
 
 function drawBoard() {
-  // Background
   ctx.fillStyle = '#1a0a2e';
   ctx.fillRect(0,0,canvas.width,canvas.height);
 
-  // Draw grid squares colored by zone
   for(let r=0;r<N;r++) for(let c=0;c<N;c++) {
     let color = '#2d1b69';
-    // Home zones
     if(r<6&&c<6) color='#ef444422';
     if(r<6&&c>8) color='#22c55e22';
     if(r>8&&c>8) color='#3b82f622';
     if(r>8&&c<6) color='#f59e0b22';
-    // Center
     if(r>=6&&r<=8&&c>=6&&c<=8) color='#ffffff11';
-    // Paths
     if((r===6||r===8)&&(c<6||c>8)) color='#ffffff08';
     if((c===6||c===8)&&(r<6||r>8)) color='#ffffff08';
 
@@ -91,7 +87,6 @@ function drawBoard() {
     ctx.strokeRect(c*SZ,r*SZ,SZ,SZ);
   }
 
-  // Color safe/start squares
   const coloredCells = [
     {r:6,c:1,p:0},{r:1,c:8,p:1},{r:8,c:13,p:2},{r:13,c:6,p:3}
   ];
@@ -100,19 +95,15 @@ function drawBoard() {
     ctx.fillRect(c*SZ+1,r*SZ+1,SZ-2,SZ-2);
   });
 
-  // Home areas
   HOMES.forEach(({r,c},p) => {
-    const rr = p<2?r:r; const cc = p%2===0&&p<2?c:p===1?c:c;
     const hr = p===0?0:p===1?0:9;
     const hc = p===0?0:p===1?9:p===2?9:0;
     ctx.fillStyle = PLAYER_COLORS[p]+'33';
     ctx.fillRect(hc*SZ, hr*SZ, 6*SZ, 6*SZ);
-    // Inner white square
     ctx.fillStyle='#ffffff15';
     ctx.fillRect((hc+1)*SZ,(hr+1)*SZ,4*SZ,4*SZ);
   });
 
-  // Center star
   ctx.save();
   ctx.translate(7.5*SZ,7.5*SZ);
   ctx.fillStyle='#ffffff22';
@@ -143,6 +134,7 @@ function drawTokens() {
   ];
 
   for(let p=0;p<NUM;p++) {
+    if (!tokens[p]) continue;
     tokens[p].forEach((tok, ti) => {
       let x,y;
       if(tok.finished) return;
@@ -153,16 +145,13 @@ function drawTokens() {
       } else {
         const [r,c] = pathCell(p, tok.pos);
         const center = cellCenter(r,c);
-        // Offset multiple tokens on same cell
         const off = (ti%2)*8-4;
         x=center.x+off; y=center.y+(ti>1?6:-6);
       }
-      // Shadow
       ctx.fillStyle='#000000aa';
       ctx.beginPath();
       ctx.ellipse(x,y+10,SZ*.22,SZ*.1,0,0,Math.PI*2);
       ctx.fill();
-      // Body
       ctx.fillStyle = PLAYER_COLORS[p];
       ctx.beginPath();
       ctx.arc(x,y,SZ*.22,0,Math.PI*2);
@@ -170,7 +159,6 @@ function drawTokens() {
       ctx.strokeStyle='#fff';
       ctx.lineWidth=1.5;
       ctx.stroke();
-      // Number
       ctx.fillStyle='#fff';
       ctx.font=`bold ${SZ*.22}px sans-serif`;
       ctx.textAlign='center'; ctx.textBaseline='middle';
@@ -214,7 +202,7 @@ function draw() {
 }
 
 function rollDice() {
-  if (!myTurn || rolling || !gameActive) return;
+  if (!window.gameReady || !myTurn || rolling || !gameActive) return;
   rolling = true;
   SFX.dice();
   let ticks = 0;
@@ -244,7 +232,7 @@ function checkMovable() {
 }
 
 function clickToken(e) {
-  if(!myTurn||!diceValue||rolling||!gameActive) return;
+  if(!window.gameReady||!myTurn||!diceValue||rolling||!gameActive) return;
   const rect=canvas.getBoundingClientRect();
   const mx=(e.clientX-rect.left)*canvas.width/rect.width;
   const my=(e.clientY-rect.top)*canvas.height/rect.height;
@@ -281,7 +269,6 @@ function moveToken(player, ti) {
   }
   sendGameMove({action:'move', player, token:ti, pos:tok.pos, finished:tok.finished}, {tokens});
 
-  // Check win
   if(tokens[player].every(t=>t.finished)) {
     SFX.win();
     showOverlay('🎲 You Win!', `${PLAYER_NAMES[player]} wins Ludo!`);
@@ -314,8 +301,8 @@ function updateStatus() {
   else setStatus(`⏳ ${PLAYER_LIST[currentPlayer]}'s turn`,0);
 }
 
-// WebSocket
 function onGameMove(data) {
+  if (data.username === CURRENT_USER) return; // ignore our own echo
   const {action}=data.move;
   if(action==='roll') {
     diceValue=data.move.value;
@@ -346,7 +333,6 @@ canvas.addEventListener('click', e => {
   const rect=canvas.getBoundingClientRect();
   const mx=(e.clientX-rect.left)*canvas.width/rect.width;
   const my=(e.clientY-rect.top)*canvas.height/rect.height;
-  // Click center area for dice
   if(Math.abs(mx-canvas.width/2)<40&&Math.abs(my-canvas.height/2)<40) rollDice();
   else clickToken(e);
 });

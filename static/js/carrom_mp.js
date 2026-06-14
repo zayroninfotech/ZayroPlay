@@ -13,6 +13,7 @@ const COLORS={black:'#1a1a1a',white:'#f5f5f5',red:'#ef4444',striker:'#d97706',bo
 let pieces, striker, dragging, dragStart, power, angle;
 let currentPlayer, myTurn, gameActive, solving;
 let scores=[0,0];
+window.gameReady = false;
 
 const POCKETS=[
   {x:BORDER,y:BORDER},
@@ -26,7 +27,6 @@ function makeStriker(){return{x:CX,y:H-BORDER-50,vx:0,vy:0,color:COLORS.striker,
 
 function initPieces(){
   const p=[];let id=0;
-  // 9 black, 9 white arranged in circle, 1 red in center
   const N=9,rad=60;
   for(let i=0;i<N;i++){
     const a=i*(2*Math.PI/N);
@@ -41,13 +41,19 @@ function initGame(){
   pieces=initPieces();
   striker=makeStriker();
   dragging=false; dragStart=null; power=0; angle=0;
-  currentPlayer=0; myTurn=PLAYER_INDEX===0;
+  currentPlayer=0; myTurn=false;
   gameActive=true; solving=false; scores=[0,0];
+
+  if (!window.gameReady) {
+    draw();
+    setStatus('⏳ Waiting for opponent to join…');
+    return;
+  }
+  myTurn=PLAYER_INDEX===0;
   draw(); updateStatus();
 }
 
 function drawBoard(){
-  // Board surface
   ctx.fillStyle=COLORS.board;
   ctx.fillRect(0,0,W,H);
   ctx.fillStyle=COLORS.border;
@@ -55,20 +61,15 @@ function drawBoard(){
   ctx.fillRect(0,H-BORDER,W,BORDER);
   ctx.fillRect(0,0,BORDER,H);
   ctx.fillRect(W-BORDER,0,BORDER,H);
-  // Inner board
   ctx.fillStyle='#d4a96a';
   ctx.fillRect(BORDER,BORDER,INNER,INNER);
-  // Lines
   ctx.strokeStyle='#a0723a';
   ctx.lineWidth=1.5;
-  // Center circle
   ctx.beginPath(); ctx.arc(CX,CY,80,0,Math.PI*2); ctx.stroke();
   ctx.beginPath(); ctx.arc(CX,CY,6,0,Math.PI*2); ctx.stroke();
-  // Corner diagonal lines
   [[BORDER,BORDER,BORDER+80,BORDER+80],[W-BORDER,BORDER,W-BORDER-80,BORDER+80],
    [BORDER,H-BORDER,BORDER+80,H-BORDER-80],[W-BORDER,H-BORDER,W-BORDER-80,H-BORDER-80]]
   .forEach(([x1,y1,x2,y2])=>{ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();});
-  // Baseline for striker (player 0 bottom, player 1 top)
   if(myTurn){
     ctx.strokeStyle='#7c3aed88';
     ctx.setLineDash([4,3]);
@@ -78,7 +79,6 @@ function drawBoard(){
     ctx.stroke();
     ctx.setLineDash([]);
   }
-  // Pockets
   POCKETS.forEach(p=>{
     ctx.fillStyle='#0008';
     ctx.beginPath(); ctx.arc(p.x,p.y,POCKET_R,0,Math.PI*2); ctx.fill();
@@ -147,12 +147,10 @@ function step(){
     b.vx*=FRICTION; b.vy*=FRICTION;
     if(Math.abs(b.vx)<MIN_V) b.vx=0;
     if(Math.abs(b.vy)<MIN_V) b.vy=0;
-    // Walls
     if(b.x-b.r<BORDER){b.x=BORDER+b.r;b.vx=Math.abs(b.vx)*0.8;SFX.strike();}
     if(b.x+b.r>W-BORDER){b.x=W-BORDER-b.r;b.vx=-Math.abs(b.vx)*0.8;SFX.strike();}
     if(b.y-b.r<BORDER){b.y=BORDER+b.r;b.vy=Math.abs(b.vy)*0.8;SFX.strike();}
     if(b.y+b.r>H-BORDER){b.y=H-BORDER-b.r;b.vy=-Math.abs(b.vy)*0.8;SFX.strike();}
-    // Pockets
     POCKETS.forEach(p=>{
       if(Math.hypot(b.x-p.x,b.y-p.y)<POCKET_R+b.r*.5){
         if(b===striker){b.pocketed=true; setTimeout(resetStriker,1000);}
@@ -162,7 +160,6 @@ function step(){
       }
     });
   });
-  // Collisions
   const all=[striker,...pieces].filter(b=>!b.pocketed);
   for(let i=0;i<all.length;i++) for(let j=i+1;j<all.length;j++){
     const a=all[i],b=all[j];
@@ -239,7 +236,7 @@ function updateStatus(){
 }
 
 canvas.addEventListener('mousedown',e=>{
-  if(!myTurn||!gameActive||solving) return;
+  if(!window.gameReady||!myTurn||!gameActive||solving) return;
   const rect=canvas.getBoundingClientRect();
   const mx=(e.clientX-rect.left)*W/rect.width;
   const my=(e.clientY-rect.top)*H/rect.height;
@@ -268,7 +265,8 @@ canvas.addEventListener('mouseup',e=>{
 });
 
 function onGameMove(data){
-  if(data.move.action==='flick'&&data.username!==CURRENT_USER){
+  if(data.username===CURRENT_USER) return; // ignore our own echo
+  if(data.move.action==='flick'){
     pieces=data.state.pieces; striker=data.state.striker;
     flick(data.move.vx,data.move.vy);
   }

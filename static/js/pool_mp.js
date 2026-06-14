@@ -8,7 +8,6 @@ const POCKET_R = 18;
 const BALL_R = 11;
 const TABLE_PAD = 40;
 
-// Table bounds
 const TL = {x:TABLE_PAD, y:TABLE_PAD};
 const TR = {x:W-TABLE_PAD, y:TABLE_PAD};
 const BL = {x:TABLE_PAD, y:H-TABLE_PAD};
@@ -20,15 +19,15 @@ const POCKETS = [
 ];
 
 const BALL_COLORS = [
-  '#f5f5f5', // 0 = cue
-  '#f59e0b','#3b82f6','#ef4444','#7c3aed','#f97316','#16a34a','#991b1b','#1a1a1a', // 1-8 solids
-  '#fde68a','#93c5fd','#fca5a5','#c4b5fd','#fdba74','#86efac','#fee2e2','#000' // 9-15 stripes
+  '#f5f5f5',
+  '#f59e0b','#3b82f6','#ef4444','#7c3aed','#f97316','#16a34a','#991b1b','#1a1a1a',
+  '#fde68a','#93c5fd','#fca5a5','#c4b5fd','#fdba74','#86efac','#fee2e2','#000'
 ];
 
 let balls, cue, dragging, dragStart, gameActive, myTurn, currentPlayer, solving;
 let pocketed = [];
-let playerGroups = [null, null]; // 'solid','stripe' or null
-let shotHistory = [];
+let playerGroups = [null, null];
+window.gameReady = false;
 
 function makeBall(id, x, y) {
   return {id, x, y, vx:0, vy:0, pocketed:false, color:BALL_COLORS[id]};
@@ -60,11 +59,17 @@ function initGame() {
   gameActive = true; solving = false;
   pocketed = []; playerGroups = [null,null];
   currentPlayer = 0;
+  myTurn = false;
+
+  if (!window.gameReady) {
+    draw();
+    setStatus('⏳ Waiting for opponent to join…');
+    return;
+  }
   myTurn = PLAYER_INDEX === 0;
   draw(); updateStatus();
 }
 
-// Physics
 function stepPhysics() {
   const FRICTION = 0.988;
   const MIN_V = 0.05;
@@ -76,13 +81,11 @@ function stepPhysics() {
     if(Math.abs(b.vx)<MIN_V) b.vx=0;
     if(Math.abs(b.vy)<MIN_V) b.vy=0;
 
-    // Wall bounce
     if(b.x-BALL_R < TL.x) { b.x=TL.x+BALL_R; b.vx=Math.abs(b.vx); SFX.strike(); }
     if(b.x+BALL_R > TR.x) { b.x=TR.x-BALL_R; b.vx=-Math.abs(b.vx); SFX.strike(); }
     if(b.y-BALL_R < TL.y) { b.y=TL.y+BALL_R; b.vy=Math.abs(b.vy); SFX.strike(); }
     if(b.y+BALL_R > BL.y) { b.y=BL.y-BALL_R; b.vy=-Math.abs(b.vy); SFX.strike(); }
 
-    // Pockets
     POCKETS.forEach(p => {
       if(Math.hypot(b.x-p.x, b.y-p.y) < POCKET_R) {
         b.pocketed=true; b.vx=0; b.vy=0;
@@ -92,7 +95,6 @@ function stepPhysics() {
     });
   });
 
-  // Ball-ball collisions
   for(let i=0;i<balls.length;i++) {
     for(let j=i+1;j<balls.length;j++) {
       const a=balls[i], b=balls[j];
@@ -118,26 +120,22 @@ function isMoving() {
 }
 
 function draw() {
-  // Table felt
   ctx.fillStyle='#16613a';
   ctx.fillRect(0,0,W,H);
   ctx.fillStyle='#1a7a45';
   ctx.fillRect(TL.x,TL.y,TR.x-TL.x,BL.y-TL.y);
 
-  // Rails
   ctx.fillStyle='#78350f';
   ctx.fillRect(0,0,W,TABLE_PAD);
   ctx.fillRect(0,H-TABLE_PAD,W,TABLE_PAD);
   ctx.fillRect(0,0,TABLE_PAD,H);
   ctx.fillRect(W-TABLE_PAD,0,TABLE_PAD,H);
 
-  // Pockets
   POCKETS.forEach(p=>{
     ctx.fillStyle='#000';
     ctx.beginPath(); ctx.arc(p.x,p.y,POCKET_R,0,Math.PI*2); ctx.fill();
   });
 
-  // Cue line while dragging
   if(dragging&&myTurn&&cue&&!cue.pocketed) {
     const dx=cue.x-dragStart.x, dy=cue.y-dragStart.y;
     const len=Math.hypot(dx,dy);
@@ -150,7 +148,6 @@ function draw() {
       ctx.moveTo(cue.x,cue.y);
       ctx.lineTo(cue.x+dx*3,cue.y+dy*3);
       ctx.stroke();
-      // Cue stick
       ctx.strokeStyle='#d97706';
       ctx.lineWidth=4;
       ctx.setLineDash([]);
@@ -162,16 +159,12 @@ function draw() {
     }
   }
 
-  // Balls
   balls.forEach(b=>{
     if(b.pocketed) return;
-    // Shadow
     ctx.fillStyle='#00000044';
     ctx.beginPath(); ctx.ellipse(b.x+3,b.y+3,BALL_R,BALL_R*.6,0,0,Math.PI*2); ctx.fill();
-    // Ball
     ctx.fillStyle=b.color;
     ctx.beginPath(); ctx.arc(b.x,b.y,BALL_R,0,Math.PI*2); ctx.fill();
-    // Stripe (9-15)
     if(b.id>=9&&b.id<=15){
       ctx.save();
       ctx.beginPath(); ctx.arc(b.x,b.y,BALL_R,0,Math.PI*2); ctx.clip();
@@ -179,17 +172,14 @@ function draw() {
       ctx.fillRect(b.x-BALL_R,b.y-BALL_R*.5,BALL_R*2,BALL_R);
       ctx.restore();
     }
-    // Number
     ctx.fillStyle=b.id===0?'transparent':(b.id===8||b.id>=9)?'#fff':'#1a1a1a';
     ctx.font=`bold ${BALL_R*.9}px sans-serif`;
     ctx.textAlign='center'; ctx.textBaseline='middle';
     if(b.id>0) ctx.fillText(b.id,b.x,b.y);
-    // Shine
     ctx.fillStyle='#ffffff55';
     ctx.beginPath(); ctx.arc(b.x-3,b.y-3,BALL_R*.35,0,Math.PI*2); ctx.fill();
   });
 
-  // HUD
   ctx.fillStyle='#ffffffcc';
   ctx.font='bold 14px Orbitron,sans-serif';
   ctx.textAlign='left'; ctx.textBaseline='top';
@@ -254,10 +244,9 @@ function updateStatus() {
   setStatus(myTurn?`🎱 Your shot ${gStr}`:`⏳ ${PLAYER_LIST[currentPlayer]}'s turn`,0);
 }
 
-// Mouse / touch
 let mousePos={x:0,y:0};
 canvas.addEventListener('mousedown',e=>{
-  if(!myTurn||!gameActive||solving) return;
+  if(!window.gameReady||!myTurn||!gameActive||solving) return;
   const rect=canvas.getBoundingClientRect();
   const mx=(e.clientX-rect.left)*W/rect.width;
   const my=(e.clientY-rect.top)*H/rect.height;
@@ -287,9 +276,9 @@ canvas.addEventListener('mouseup',e=>{
   }
 });
 
-// WebSocket
 function onGameMove(data) {
-  if(data.move.action==='shoot'&&data.username!==CURRENT_USER){
+  if(data.username===CURRENT_USER) return; // ignore our own echo
+  if(data.move.action==='shoot'){
     balls=data.state.balls;
     cue=balls[0];
     shoot(data.move.vx, data.move.vy);

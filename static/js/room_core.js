@@ -70,10 +70,11 @@ function wsConnect() {
   ws.onmessage = e => {
     const data = JSON.parse(e.data);
     switch (data.type) {
-      case 'chat':         handleChatMsg(data);   break;
-      case 'player_event': handlePlayerEvent(data);break;
-      case 'game_move':    if(typeof onGameMove   ==='function') onGameMove(data);   break;
-      case 'game_event':   if(typeof onGameEvent  ==='function') onGameEvent(data);  break;
+      case 'chat':         handleChatMsg(data);    break;
+      case 'player_event': handlePlayerEvent(data); break;
+      case 'game_start':   handleGameStart(data);  break;
+      case 'game_move':    if(typeof onGameMove  ==='function') onGameMove(data);  break;
+      case 'game_event':   if(typeof onGameEvent ==='function') onGameEvent(data); break;
     }
   };
 }
@@ -145,6 +146,16 @@ function appendSysMsg(text) {
   div.textContent = text;
   box.appendChild(div);
   box.scrollTop = box.scrollHeight;
+}
+
+// Called by server when 2+ players are connected — re-inits game with correct player list
+function handleGameStart(data) {
+  window.PLAYER_LIST  = data.players.map(p => p.username);
+  const myIdx = PLAYER_LIST.indexOf(CURRENT_USER);
+  window.PLAYER_INDEX = myIdx >= 0 ? myIdx : 0;
+  window.gameReady    = true;
+  appendSysMsg(`🎮 Game started! ${PLAYER_LIST.join(' vs ')}`);
+  if (typeof initGame === 'function') initGame();
 }
 
 function handlePlayerEvent(data) {

@@ -70,7 +70,7 @@
   const PLAYER_LIST  = [{% for p in player_list %}"{{ p.username }}"{% if not forloop.last %},{% endif %}{% endfor %}];
   const IS_HOST      = {{ is_host|yesno:"true,false" }};
   const GAME_TYPE    = "{{ room.game_type }}";
-  const WS_URL       = `ws://${location.host}/ws/room/${ROOM_ID}/`;
+  const WS_URL       = `${location.protocol === 'https:' ? 'wss' : 'ws'}://${location.host}/ws/room/${ROOM_ID}/`;
 </script>
 <script src="/static/js/room_core.js"></script>
 <script src="/static/js/{{ game_js }}"></script>

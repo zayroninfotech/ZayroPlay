@@ -40,7 +40,8 @@ def game_room(request, pk):
             return redirect('multi_lobby')
     messages = room.messages.select_related('user__profile').order_by('-timestamp')[:50]
     meta = GAME_META.get(room.game_type, {})
-    player_list = list(room.players.select_related('profile').all())
+    players_qs  = list(room.players.select_related('profile').all())
+    player_list = sorted(players_qs, key=lambda p: (0 if p == room.host else 1, p.id))
     player_index = next((i for i,p in enumerate(player_list) if p == request.user), 0)
     return render(request, f'multiplayer/room_{room.game_type}.html', {
         'room': room, 'meta': meta,

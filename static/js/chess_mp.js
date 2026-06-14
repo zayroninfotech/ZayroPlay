@@ -6,7 +6,6 @@ canvas.width = 560; canvas.height = 560;
 const SQ = 70;
 const COLS = ['a','b','c','d','e','f','g','h'];
 
-// Piece unicode
 const PIECES = {
   wK:'♔',wQ:'♕',wR:'♖',wB:'♗',wN:'♘',wP:'♙',
   bK:'♚',bQ:'♛',bR:'♜',bB:'♝',bN:'♞',bP:'♟'
@@ -25,13 +24,19 @@ const INIT_BOARD = [
 
 let board, selected, currentTurn, myColor, gameActive;
 let legalMoves = [];
+window.gameReady = false;
 
 function initGame() {
   board = INIT_BOARD.map(r => [...r]);
   selected = null; legalMoves = [];
   currentTurn = 'w';
   gameActive = true;
-  // Player 0 = white, Player 1 = black
+
+  if (!window.gameReady) {
+    drawBoard();
+    setStatus('⏳ Waiting for opponent to join…');
+    return;
+  }
   myColor = PLAYER_INDEX === 0 ? 'w' : 'b';
   drawBoard();
   updateTurnStatus();
@@ -44,12 +49,10 @@ function drawBoard() {
       ctx.fillStyle = light ? '#f0d9b5' : '#b58863';
       ctx.fillRect(c*SQ, r*SQ, SQ, SQ);
 
-      // Highlight selected
       if (selected && selected[0]===r && selected[1]===c) {
         ctx.fillStyle = '#f6f669aa';
         ctx.fillRect(c*SQ, r*SQ, SQ, SQ);
       }
-      // Legal move dots
       if (legalMoves.some(m=>m[0]===r&&m[1]===c)) {
         const target = board[r][c];
         if (target) {
@@ -64,7 +67,6 @@ function drawBoard() {
         }
       }
 
-      // Draw piece
       const piece = board[r][c];
       if (piece) {
         ctx.font = `${SQ*0.75}px serif`;
@@ -79,7 +81,6 @@ function drawBoard() {
     }
   }
 
-  // Coordinates
   ctx.font = '11px sans-serif';
   ctx.textAlign = 'left'; ctx.textBaseline = 'top';
   for (let i=0;i<8;i++) {
@@ -135,7 +136,7 @@ function getLegalMoves(r, c) {
 }
 
 function handleClick(e) {
-  if (!gameActive || currentTurn !== myColor) return;
+  if (!window.gameReady || !gameActive || currentTurn !== myColor) return;
   const rect = canvas.getBoundingClientRect();
   const scaleX = canvas.width / rect.width;
   const scaleY = canvas.height / rect.height;
@@ -150,7 +151,6 @@ function handleClick(e) {
       const piece = board[selected[0]][selected[1]];
       board[r][c] = piece;
       board[selected[0]][selected[1]] = null;
-      // Pawn promotion
       if (piece[1]==='P'&&(r===0||r===7)) board[r][c] = piece[0]+'Q';
 
       if (captured) SFX.capture(); else SFX.move();
@@ -161,7 +161,6 @@ function handleClick(e) {
       selected = null; legalMoves = [];
       drawBoard(); updateTurnStatus();
 
-      // Check king captured
       if (captured && captured[1]==='K') {
         const winner = myColor==='w'?'White':'Black';
         SFX.win();
@@ -193,21 +192,19 @@ function updateTurnStatus() {
   setStatus(mine ? '♟ Your turn' : `⏳ ${PLAYER_LIST[currentTurn==='w'?0:1]}'s turn`, 0);
 }
 
-// WebSocket handlers
 function onGameMove(data) {
+  if (data.username === CURRENT_USER) return; // ignore our own echo
   const { board: newBoard, turn } = data.state;
   if (newBoard) {
     board = newBoard;
     currentTurn = turn;
-    const { captured } = data.move;
-    if (captured) SFX.capture(); else SFX.move();
+    if (data.move.captured) SFX.capture(); else SFX.move();
     drawBoard(); updateTurnStatus();
   }
 }
 
 function onGameEvent(data) {
   if (data.event === 'win') {
-    const loser = data.payload.winner === 'White' ? 'Black' : 'White';
     SFX.lose();
     showOverlay('♟ Game Over', `${data.payload.winner} wins! You lost.`);
     gameActive = false;
