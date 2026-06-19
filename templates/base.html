@@ -40,13 +40,11 @@
           </a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link nav-pill dropdown-toggle {% if request.resolver_match.url_name == 'game' or request.resolver_match.url_name == 'candy' %}active{% endif %}"
+          <a class="nav-link nav-pill dropdown-toggle {% if request.resolver_match.url_name in 'candy snake flappy memory whack' %}active{% endif %}"
              href="#" role="button" data-bs-toggle="dropdown">
             <i class="bi bi-controller me-1"></i>Games
           </a>
           <ul class="dropdown-menu dropdown-menu-dark" style="background:rgba(15,12,41,0.95);border:1px solid rgba(255,255,255,0.1);border-radius:14px;">
-            <li><a class="dropdown-item py-2" href="{% url 'game' %}"><span class="me-2">🫧</span>Bubble Shooter</a></li>
-
             <li><a class="dropdown-item py-2" href="{% url 'candy' %}"><span class="me-2">🍬</span>Candy Crush</a></li>
             <li><hr class="dropdown-divider border-secondary"></li>
             <li><a class="dropdown-item py-2" href="{% url 'snake' %}"><span class="me-2">🐍</span>Snake</a></li>

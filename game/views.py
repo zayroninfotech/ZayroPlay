@@ -7,12 +7,6 @@ from .models import ScoreBoard
 
 GAMES = [
     {
-        'id': 'bubble', 'name': 'Bubble Shooter', 'emoji': '🫧',
-        'description': 'Aim & shoot colourful bubbles. Match 3+ to pop them and clear the board!',
-        'color_from': '#7c3aed', 'color_to': '#ec4899',
-        'url': 'game', 'badge': 'Classic', 'badge_color': 'purple', 'difficulty': '★★☆',
-    },
-    {
         'id': 'candy', 'name': 'Candy Crush', 'emoji': '🍬',
         'description': 'Swap sweet candies to match 3 or more in a row and crush your high score!',
         'color_from': '#f59e0b', 'color_to': '#ef4444',
@@ -52,7 +46,6 @@ def home(request):
     return render(request, 'game/home.html', {'games': GAMES, 'tops': tops})
 
 
-def game(request):   return render(request, 'game/game.html')
 def candy(request):  return render(request, 'game/candy.html')
 def snake(request):  return render(request, 'game/snake.html')
 def flappy(request): return render(request, 'game/flappy.html')
@@ -61,7 +54,7 @@ def whack(request):  return render(request, 'game/whack.html')
 
 
 def leaderboard(request):
-    game_id = request.GET.get('game', 'bubble')
+    game_id = request.GET.get('game', 'candy')
     scores = ScoreBoard.objects.filter(game=game_id)[:20]
     current_game = GAME_TOP.get(game_id, GAMES[0])
     return render(request, 'game/leaderboard.html', {
@@ -78,7 +71,7 @@ def save_score(request):
         name    = data.get('name', 'Player')[:50].strip() or 'Player'
         score   = int(data.get('score', 0))
         level   = int(data.get('level', 1))
-        game_id = data.get('game', 'bubble')
+        game_id = data.get('game', 'candy')
         entry   = ScoreBoard.objects.create(player_name=name, score=score, level=level, game=game_id)
         rank    = ScoreBoard.objects.filter(game=game_id, score__gt=score).count() + 1
         return JsonResponse({'success': True, 'rank': rank, 'id': entry.id})
@@ -87,7 +80,7 @@ def save_score(request):
 
 
 def scores_api(request):
-    game_id = request.GET.get('game', 'bubble')
+    game_id = request.GET.get('game', 'candy')
     scores  = list(ScoreBoard.objects.filter(game=game_id).values('player_name', 'score', 'level', 'created_at')[:10])
     for s in scores:
         s['created_at'] = s['created_at'].strftime('%b %d, %Y')

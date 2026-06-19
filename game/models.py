@@ -1,7 +1,6 @@
 from django.db import models
 
 GAME_CHOICES = [
-    ('bubble', 'Bubble Shooter'),
     ('candy',  'Candy Crush'),
     ('snake',  'Snake'),
     ('flappy', 'Flappy Bird'),
@@ -14,7 +13,7 @@ class ScoreBoard(models.Model):
     player_name = models.CharField(max_length=50)
     score       = models.IntegerField(default=0)
     level       = models.IntegerField(default=1)
-    game        = models.CharField(max_length=20, choices=GAME_CHOICES, default='bubble')
+    game        = models.CharField(max_length=20, choices=GAME_CHOICES, default='candy')
     created_at  = models.DateTimeField(auto_now_add=True)
 
     class Meta:
