@@ -433,6 +433,45 @@ body {
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(124,58,237,0.4); border-radius: 3px; }
 
+/* ── Mobile Responsive ───────────────────────────────────────── */
+@media (max-width: 991px) {
+  /* Navbar collapsed menu */
+  .navbar-collapse .navbar-nav {
+    padding: 12px 0;
+    gap: 4px !important;
+  }
+  .navbar-collapse .nav-item { width: 100%; }
+  .navbar-collapse .nav-pill {
+    display: block;
+    border-radius: 10px !important;
+    padding: 10px 16px !important;
+  }
+  .navbar-collapse .dropdown-menu {
+    position: static !important;
+    border: none !important;
+    background: rgba(255,255,255,0.03) !important;
+    border-radius: 10px !important;
+    margin-top: 4px !important;
+    padding: 4px 8px !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .hero-section { padding: 90px 0 40px; }
+  .lobby-hero   { padding: 90px 0 30px; }
+  .cta-box      { padding: 36px 20px; }
+  .section-title { font-size: 22px; }
+}
+
+@media (max-width: 575px) {
+  .brand-text { font-size: 15px; }
+  .navbar-brand img { height: 38px !important; }
+  .hero-title { font-size: 28px !important; }
+  .auth-card  { padding: 1.75rem 1.25rem !important; }
+  .profile-stats { flex-wrap: wrap; gap: .6rem; }
+  .pstat { min-width: calc(50% - .3rem); flex: none; }
+}
+
 /* ── Lobby Hero ──────────────────────────────────────────────────── */
 .lobby-hero { padding: 130px 0 40px; }
 .lobby-badge {
