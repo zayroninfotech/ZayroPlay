@@ -72,7 +72,7 @@
       </div>
 
       <!-- Canvas -->
-      <div class="col-lg-6 col-md-8 col-12 order-1 order-lg-2 d-flex justify-content-center">
+      <div class="col-lg-7 col-md-10 col-12 order-1 order-lg-2 d-flex justify-content-center">
         <div class="position-relative">
           <canvas id="candyCanvas" width="480" height="560"></canvas>
           <div id="cOverlay">
@@ -106,43 +106,6 @@
         </div>
       </div>
 
-      <!-- Right Panel -->
-      <div class="col-lg-2 col-md-12 order-3">
-        <div class="side-panel">
-          <div class="panel-card">
-            <h6><i class="bi bi-question-circle me-1"></i>How to Play</h6>
-            <ul class="list-unstyled how-to mb-0">
-              <li><i class="bi bi-hand-index me-2"></i>Click a candy to select</li>
-              <li><i class="bi bi-arrow-left-right me-2"></i>Click adjacent to swap</li>
-              <li><i class="bi bi-grid-3x3 me-2"></i>Match 3+ in a row/col</li>
-              <li><i class="bi bi-arrow-down me-2"></i>Candies fall &amp; refill</li>
-              <li><i class="bi bi-star me-2"></i>Hit target to level up!</li>
-            </ul>
-          </div>
-          <div class="panel-card">
-            <h6><i class="bi bi-info-circle me-1"></i>Scoring</h6>
-            <ul class="list-unstyled how-to mb-0">
-              <li><i class="bi bi-circle-fill me-2" style="color:#4ade80"></i>3 match = 30 pts</li>
-              <li><i class="bi bi-circle-fill me-2" style="color:#fbbf24"></i>4 match = 80 pts</li>
-              <li><i class="bi bi-circle-fill me-2" style="color:#f472b6"></i>5 match = 150 pts</li>
-              <li><i class="bi bi-lightning-fill me-2" style="color:#38bdf8"></i>Cascade bonus!</li>
-            </ul>
-          </div>
-          <div class="panel-card text-center">
-            <h6><i class="bi bi-fire me-1"></i>Best Score</h6>
-            <div class="stat-display" id="cBestDisplay">—</div>
-            <div class="stat-label-sm">this session</div>
-          </div>
-          <div class="panel-card text-center">
-            <a href="{% url 'home' %}" class="btn btn-outline-glow w-100 mb-2">
-              <i class="bi bi-grid me-1"></i>All Games
-            </a>
-            <a href="{% url 'leaderboard' %}?game=candy" class="btn btn-outline-glow w-100">
-              <i class="bi bi-trophy me-1"></i>Leaderboard
-            </a>
-          </div>
-        </div>
-      </div>
 
     </div>
   </div>
