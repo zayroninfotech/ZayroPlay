@@ -205,7 +205,7 @@ function shoot() {
 // ── Collision & snapping ───────────────────────────────────────────────────
 function snapToGrid(x, y) {
   let bestRow = 0, bestCol = 0, bestDist = Infinity;
-  const maxRow = Math.min(grid.length + 1, ROWS_VISIBLE + 2);
+  const maxRow = Math.min(grid.length + 1, ROWS_VISIBLE);
   for (let r = 0; r < maxRow; r++) {
     for (let c = 0; c < COLS; c++) {
       if (grid[r] && grid[r][c]) continue;
@@ -215,6 +215,8 @@ function snapToGrid(x, y) {
       if (d < bestDist) { bestDist = d; bestRow = r; bestCol = c; }
     }
   }
+  if (bestDist > R * 2.5) { bestRow = 0; bestCol = Math.round((x - R) / (R * 2)); }
+  bestCol = Math.max(0, Math.min(COLS - 1, bestCol));
   return { row: bestRow, col: bestCol };
 }
 
@@ -324,12 +326,11 @@ function update() {
   projectile.x += projectile.vx;
   projectile.y += projectile.vy;
 
-  // wall bounce
+  // wall bounce (sides only)
   if (projectile.x - R < 0)   { projectile.x = R; projectile.vx *= -1; }
   if (projectile.x + R > W)   { projectile.x = W - R; projectile.vx *= -1; }
-  if (projectile.y - R < 0)   { projectile.y = R; projectile.vy *= -1; }
 
-  // hit top wall
+  // hit top wall → land
   if (projectile.y - R <= 0) {
     landBubble();
     return;
@@ -370,7 +371,7 @@ function landBubble() {
     floating.forEach(([r, c]) => {
       spawnParticles(colToX(c, r), rowToY(r), grid[r][c], 6);
       grid[r][c] = null;
-      score += 5;
+      score += 5 * level;
     });
     scoreEl.textContent = score;
   }
@@ -435,7 +436,8 @@ function drawAimLine() {
   ctx.moveTo(x, y);
   for (let i = 0; i < 30; i++) {
     x += vx; y += vy;
-    if (x - R < 0 || x + R > W) { vx *= -1; x += vx; }
+    if (x - R < 0)  { x = R; vx = Math.abs(vx); }
+    if (x + R > W)  { x = W - R; vx = -Math.abs(vx); }
     if (y < 0) break;
     ctx.lineTo(x, y);
   }
