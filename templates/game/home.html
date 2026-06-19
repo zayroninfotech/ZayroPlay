@@ -102,16 +102,54 @@
 .mp-player-stack{display:flex;justify-content:center;gap:-.5rem;margin-bottom:1rem}
 .mp-av{width:36px;height:36px;border-radius:50%;background:#2d1b69;border:2px solid #7c3aed;display:flex;align-items:center;justify-content:center;font-size:1.1rem;margin-left:-.4rem}
 
-/* ── FOOTER STRIP ──────────────────────────────────── */
-.zp-footer-strip{background:linear-gradient(135deg,#1e1b4b,#0f0a1e);border-top:1px solid #4c1d9533;padding:1.5rem 0;text-align:center}
-.zp-footer-strip p{color:#334155;font-size:.82rem;margin:0}
-.zp-footer-strip a{color:#7c3aed;text-decoration:none}
+/* ── WHY SECTION ───────────────────────────────────── */
+.why-section{padding:5rem 0;background:#06040f}
+.why-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:1.5rem;margin-top:3rem}
+.why-card{background:linear-gradient(135deg,#0d0b1e,#111827);border:1px solid #1e1b4b;border-radius:1.25rem;padding:1.75rem 1.5rem;transition:transform .3s,border-color .3s,box-shadow .3s;text-align:center}
+.why-card:hover{transform:translateY(-5px);border-color:#7c3aed55;box-shadow:0 10px 35px #7c3aed22}
+.why-icon{width:56px;height:56px;border-radius:1rem;display:flex;align-items:center;justify-content:center;font-size:1.6rem;margin:0 auto 1rem}
+.why-title{font-family:'Orbitron',sans-serif;font-size:.9rem;font-weight:800;color:#f1f5f9;margin-bottom:.5rem}
+.why-desc{color:#64748b;font-size:.83rem;line-height:1.6}
+
+/* ── HOW IT WORKS ──────────────────────────────────── */
+.how-section{padding:5rem 0;background:#080612}
+.how-steps{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:2rem;margin-top:3rem}
+.how-step{text-align:center}
+.how-step-num{width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#a855f7);display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:1.3rem;font-weight:900;color:#fff;margin:0 auto 1.25rem;box-shadow:0 0 25px #7c3aed55}
+.how-step-title{font-family:'Orbitron',sans-serif;font-size:.9rem;font-weight:800;color:#f1f5f9;margin-bottom:.5rem}
+.how-step-desc{color:#64748b;font-size:.85rem;line-height:1.6}
+
+/* ── CTA BANNER ────────────────────────────────────── */
+.cta-banner{padding:5rem 0;background:linear-gradient(135deg,#1e1b4b 0%,#0f0a1e 50%,#1a0533 100%);position:relative;overflow:hidden;text-align:center}
+.cta-banner::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 50% 50%,#7c3aed18,transparent);pointer-events:none}
+.cta-title{font-family:'Orbitron',sans-serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;color:#fff;margin-bottom:1rem}
+.cta-title span{background:linear-gradient(135deg,#a78bfa,#f97316);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.cta-sub{color:#94a3b8;font-size:1rem;margin-bottom:2.5rem;max-width:500px;margin-left:auto;margin-right:auto}
+.cta-badges{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;margin-bottom:2.5rem}
+.cta-badge{display:flex;align-items:center;gap:.4rem;background:#ffffff08;border:1px solid #ffffff15;border-radius:2rem;padding:.4rem 1rem;color:#94a3b8;font-size:.8rem}
+
+/* ── FOOTER ────────────────────────────────────────── */
+.zp-footer{background:#06040f;border-top:1px solid #1e1b4b;padding:3.5rem 0 1.5rem}
+.zp-footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:2.5rem;margin-bottom:3rem}
+.zp-footer-brand .brand-logo{display:flex;align-items:center;gap:.5rem;text-decoration:none;margin-bottom:1rem}
+.zp-footer-brand .brand-text{font-family:'Orbitron',sans-serif;font-size:1.1rem;font-weight:900;color:#fff}
+.zp-footer-brand p{color:#475569;font-size:.83rem;line-height:1.65;max-width:280px}
+.zp-footer-col h6{font-family:'Orbitron',sans-serif;font-size:.75rem;font-weight:800;color:#a78bfa;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem}
+.zp-footer-col a{display:block;color:#475569;font-size:.85rem;text-decoration:none;margin-bottom:.5rem;transition:color .2s}
+.zp-footer-col a:hover{color:#a78bfa}
+.zp-footer-bottom{border-top:1px solid #1e1b4b;padding-top:1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem}
+.zp-footer-bottom p{color:#334155;font-size:.8rem;margin:0}
+.zp-footer-socials{display:flex;gap:.5rem}
+.zp-social-btn{width:34px;height:34px;border-radius:.5rem;background:#ffffff08;border:1px solid #ffffff10;display:flex;align-items:center;justify-content:center;color:#475569;font-size:.9rem;text-decoration:none;transition:all .2s}
+.zp-social-btn:hover{background:#7c3aed33;border-color:#7c3aed;color:#a78bfa}
 
 @media(max-width:768px){
   .mp-banner-grid{grid-template-columns:1fr}
   .zp-sb-item{padding:.4rem 1.1rem}
   .zp-sb-div{display:none}
   .zp-hero-right canvas{max-width:340px!important}
+  .zp-footer-grid{grid-template-columns:1fr 1fr}
+  .zp-footer-brand{grid-column:1/-1}
 }
 </style>
 {% endblock %}
@@ -270,5 +308,157 @@
     </div>
   </div>
 </section>
+
+<!-- ══ WHY ZAYROPLAY ══════════════════════════════════════════════════════════ -->
+<section class="why-section">
+  <div class="container">
+    <div class="text-center">
+      <div class="sec-eyebrow">⚡ Why ZayroPlay</div>
+      <h2 class="sec-title">Built Different</h2>
+      <p class="sec-sub">Everything you need for the ultimate browser gaming experience</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-icon" style="background:#7c3aed22">🚀</div>
+        <div class="why-title">Instant Play</div>
+        <div class="why-desc">No downloads, no installs. Open your browser and start playing in seconds — completely free.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon" style="background:#f9731622">⚡</div>
+        <div class="why-title">Zero Lag</div>
+        <div class="why-desc">WebSocket-powered real-time engine ensures buttery-smooth multiplayer with no delay.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon" style="background:#10b98122">🏆</div>
+        <div class="why-title">Global Leaderboard</div>
+        <div class="why-desc">Compete worldwide. Every score is tracked — see where you rank among all ZayroPlay players.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon" style="background:#06b6d422">💬</div>
+        <div class="why-title">Live Chat</div>
+        <div class="why-desc">Chat with opponents in real-time inside every multiplayer room. Gaming is better together.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon" style="background:#ec489922">🎮</div>
+        <div class="why-title">11+ Games</div>
+        <div class="why-desc">From arcade classics to strategy board games — a growing library of games for every mood.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon" style="background:#fbbf2422">🔒</div>
+        <div class="why-title">Safe & Secure</div>
+        <div class="why-desc">HTTPS encrypted, no ads, no trackers. Your data stays yours — always.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ HOW IT WORKS ═══════════════════════════════════════════════════════════ -->
+<section class="how-section">
+  <div class="container">
+    <div class="text-center">
+      <div class="sec-eyebrow">🎯 Get Started</div>
+      <h2 class="sec-title">How It Works</h2>
+      <p class="sec-sub">Up and playing in three simple steps</p>
+    </div>
+    <div class="how-steps">
+      <div class="how-step">
+        <div class="how-step-num">1</div>
+        <div class="how-step-title">Create Account</div>
+        <div class="how-step-desc">Sign up free in seconds. No credit card needed. Just a username and you're in.</div>
+      </div>
+      <div class="how-step">
+        <div class="how-step-num">2</div>
+        <div class="how-step-title">Pick a Game</div>
+        <div class="how-step-desc">Browse 11+ games — solo arcade or live multiplayer. Find what matches your vibe.</div>
+      </div>
+      <div class="how-step">
+        <div class="how-step-num">3</div>
+        <div class="how-step-title">Play & Compete</div>
+        <div class="how-step-desc">Jump into a room, challenge friends, post your score and climb the leaderboard.</div>
+      </div>
+      <div class="how-step">
+        <div class="how-step-num">4</div>
+        <div class="how-step-title">Rise the Ranks</div>
+        <div class="how-step-desc">Keep playing, beat your personal best, and become the top player on the global board.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CTA BANNER ════════════════════════════════════════════════════════════ -->
+<section class="cta-banner">
+  <div class="container" style="position:relative;z-index:1">
+    <h2 class="cta-title">Ready to <span>Play?</span></h2>
+    <p class="cta-sub">Join ZayroPlay today — free forever, no downloads, play from any device.</p>
+    <div class="cta-badges">
+      <div class="cta-badge">✅ Free Forever</div>
+      <div class="cta-badge">✅ No Downloads</div>
+      <div class="cta-badge">✅ Any Device</div>
+      <div class="cta-badge">✅ Real-Time Multiplayer</div>
+    </div>
+    <div style="display:flex;justify-content:center;gap:1rem;flex-wrap:wrap">
+      {% if user.is_authenticated %}
+      <a href="#games" class="btn-glow" style="font-size:1rem;padding:.85rem 2.25rem"><i class="bi bi-play-fill"></i>Play Now</a>
+      <a href="{% url 'multi_lobby' %}" class="btn-wire" style="font-size:1rem;padding:.85rem 2.25rem"><i class="bi bi-people-fill"></i>Multiplayer</a>
+      {% else %}
+      <a href="{% url 'register' %}" class="btn-glow" style="font-size:1rem;padding:.85rem 2.25rem"><i class="bi bi-person-plus"></i>Join Free</a>
+      <a href="#games" class="btn-wire" style="font-size:1rem;padding:.85rem 2.25rem"><i class="bi bi-play-fill"></i>Play as Guest</a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ════════════════════════════════════════════════════════════════ -->
+<footer class="zp-footer">
+  <div class="container">
+    <div class="zp-footer-grid">
+      <div class="zp-footer-brand">
+        <a class="brand-logo" href="{% url 'home' %}">
+          <img src="{% static 'img/game5.png' %}" alt="ZayroPlay" style="height:36px;width:auto">
+          <span class="brand-text">ZayroPlay</span>
+        </a>
+        <p>India's next-generation browser gaming platform. Play solo arcade classics, battle friends in real-time multiplayer, and climb the global leaderboard — all free.</p>
+        <p style="margin-top:.75rem;color:#334155;font-size:.75rem">Powered by <strong style="color:#7c3aed">Zayron Infotech Pvt. Ltd.</strong></p>
+      </div>
+      <div class="zp-footer-col">
+        <h6>Games</h6>
+        <a href="{% url 'candy' %}">🍬 Candy Crush</a>
+        <a href="{% url 'snake' %}">🐍 Snake</a>
+        <a href="{% url 'flappy' %}">🐦 Flappy Bird</a>
+        <a href="{% url 'memory' %}">🃏 Memory Match</a>
+        <a href="{% url 'whack' %}">🔨 Whack-a-Mole</a>
+      </div>
+      <div class="zp-footer-col">
+        <h6>Multiplayer</h6>
+        <a href="{% url 'multi_lobby' %}">♟️ Chess</a>
+        <a href="{% url 'multi_lobby' %}">🎲 Ludo</a>
+        <a href="{% url 'multi_lobby' %}">🐍 Snake & Ladder</a>
+        <a href="{% url 'multi_lobby' %}">🎱 8 Ball Pool</a>
+        <a href="{% url 'multi_lobby' %}">🪙 Carrom</a>
+      </div>
+      <div class="zp-footer-col">
+        <h6>Account</h6>
+        {% if user.is_authenticated %}
+        <a href="{% url 'profile' %}">👤 Profile</a>
+        <a href="{% url 'leaderboard' %}">🏆 Leaderboard</a>
+        <a href="{% url 'logout' %}">🚪 Logout</a>
+        {% else %}
+        <a href="{% url 'register' %}">✨ Register</a>
+        <a href="{% url 'login' %}">🔑 Login</a>
+        <a href="{% url 'leaderboard' %}">🏆 Leaderboard</a>
+        {% endif %}
+      </div>
+    </div>
+    <div class="zp-footer-bottom">
+      <p>© 2025 ZayroPlay — Zayron Infotech Pvt. Ltd. All rights reserved.</p>
+      <div class="zp-footer-socials">
+        <a href="https://github.com/zayroninfotech" class="zp-social-btn" target="_blank"><i class="bi bi-github"></i></a>
+        <a href="#" class="zp-social-btn"><i class="bi bi-twitter-x"></i></a>
+        <a href="#" class="zp-social-btn"><i class="bi bi-instagram"></i></a>
+        <a href="#" class="zp-social-btn"><i class="bi bi-discord"></i></a>
+      </div>
+    </div>
+  </div>
+</footer>
 
 {% endblock %}
