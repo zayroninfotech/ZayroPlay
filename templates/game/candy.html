@@ -200,23 +200,34 @@
       <div class="col-lg-2 col-md-12 order-2 order-lg-1">
         <div class="side-panel">
 
-          <!-- Score -->
+          <!-- Score — big hero card -->
           <div class="panel-card score-card text-center">
             <h6><i class="bi bi-star-fill"></i>Score</h6>
             <div class="stat-display" id="cScoreDisplay">0</div>
             <div class="stat-label-sm">points</div>
           </div>
 
-          <!-- Level -->
-          <div class="panel-card level-card text-center">
-            <h6><i class="bi bi-layers"></i>Level</h6>
-            <div class="stat-display" id="cLevelDisplay">1</div>
-            <div class="stat-label-sm">current level</div>
+          <!-- Level / Target / Best — compact 3-up row -->
+          <div class="panel-card" style="padding:12px 10px">
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;text-align:center">
+              <div>
+                <div style="font-size:9px;color:#a78bfa;font-family:'Orbitron',sans-serif;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px">LVL</div>
+                <div class="stat-display" id="cLevelDisplay" style="font-size:1.3rem;background:linear-gradient(135deg,#a78bfa,#7c3aed)">1</div>
+              </div>
+              <div style="border-left:1px solid rgba(255,255,255,.06);border-right:1px solid rgba(255,255,255,.06)">
+                <div style="font-size:9px;color:#f87171;font-family:'Orbitron',sans-serif;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px">TARGET</div>
+                <div class="stat-display" id="cTargetDisplay" style="font-size:1.1rem;background:linear-gradient(135deg,#f87171,#ec4899)">500</div>
+              </div>
+              <div>
+                <div style="font-size:9px;color:#fbbf24;font-family:'Orbitron',sans-serif;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px">BEST</div>
+                <div class="stat-display" id="cBestDisplay" style="font-size:1.1rem">—</div>
+              </div>
+            </div>
           </div>
 
           <!-- Moves with ring -->
           <div class="panel-card moves-card text-center">
-            <h6><i class="bi bi-arrow-left-right"></i>Moves</h6>
+            <h6><i class="bi bi-arrow-left-right"></i>Moves Left</h6>
             <div class="progress-ring-wrap">
               <svg width="70" height="70">
                 <circle class="ring-bg" cx="35" cy="35" r="28"/>
@@ -227,24 +238,9 @@
                 <div class="stat-display" id="cMovesDisplay" style="font-size:1.5rem">30</div>
               </div>
             </div>
-            <div class="stat-label-sm">remaining</div>
             <div class="moves-bar mt-2">
               <div class="moves-fill" id="movesFill" style="width:100%"></div>
             </div>
-          </div>
-
-          <!-- Target -->
-          <div class="panel-card target-card text-center">
-            <h6><i class="bi bi-bullseye"></i>Target</h6>
-            <div class="stat-display" id="cTargetDisplay">500</div>
-            <div class="stat-label-sm">to beat level</div>
-          </div>
-
-          <!-- Best Score -->
-          <div class="panel-card best-card text-center">
-            <h6><i class="bi bi-fire"></i>Best Score</h6>
-            <div class="stat-display" id="cBestDisplay" style="font-size:1.6rem">—</div>
-            <div class="stat-label-sm">this session</div>
           </div>
 
           <!-- Combo -->
