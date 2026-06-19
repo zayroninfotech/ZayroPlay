@@ -25,6 +25,12 @@ GAMES = [
         'url': 'snake', 'badge': 'Classic', 'badge_color': 'purple', 'difficulty': '★★☆',
     },
     {
+        'id': 'flappy', 'name': 'Flappy Bird', 'emoji': '🐦',
+        'description': 'Tap to flap through the pipes. One wrong move and it\'s game over!',
+        'color_from': '#0ea5e9', 'color_to': '#6366f1',
+        'url': 'flappy', 'badge': 'Addictive', 'badge_color': 'cyan', 'difficulty': '★★★',
+    },
+    {
         'id': 'memory', 'name': 'Memory Match', 'emoji': '🃏',
         'description': 'Flip cards and find all matching pairs before the timer runs out!',
         'color_from': '#d946ef', 'color_to': '#ec4899',
@@ -49,6 +55,7 @@ def home(request):
 def game(request):   return render(request, 'game/game.html')
 def candy(request):  return render(request, 'game/candy.html')
 def snake(request):  return render(request, 'game/snake.html')
+def flappy(request): return render(request, 'game/flappy.html')
 def memory(request): return render(request, 'game/memory.html')
 def whack(request):  return render(request, 'game/whack.html')
 

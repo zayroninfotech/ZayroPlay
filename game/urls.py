@@ -6,6 +6,7 @@ urlpatterns = [
     path('play/bubble/',  views.game,   name='game'),
     path('play/candy/',   views.candy,  name='candy'),
     path('play/snake/',   views.snake,  name='snake'),
+    path('play/flappy/',  views.flappy, name='flappy'),
     path('play/memory/',  views.memory, name='memory'),
     path('play/whack/',   views.whack,  name='whack'),
     path('leaderboard/',  views.leaderboard, name='leaderboard'),
