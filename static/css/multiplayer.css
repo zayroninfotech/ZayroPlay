@@ -110,26 +110,7 @@
 .turn-badge{position:absolute;top:1rem;left:50%;transform:translateX(-50%);background:#7c3aed;border-radius:2rem;padding:.35rem 1.2rem;color:#fff;font-family:'Orbitron',sans-serif;font-size:.8rem;pointer-events:none}
 
 @media(max-width:700px){
-  .room-wrap{height:calc(100vh - 56px)}
   .room-body{flex-direction:column}
-  .room-game{min-height:200px}
   .room-chat{width:100%;min-width:unset;height:220px;border-left:none;border-top:1px solid #1e1b4b}
-  .room-header{padding:.5rem .75rem;gap:.5rem}
-  .rh-title{font-size:.85rem}
-  .go-content{padding:1.5rem 1.25rem}
-  .go-title{font-size:1.3rem}
   .rooms-grid{grid-template-columns:1fr}
-}
-
-@media(max-width:575px){
-  /* Lobby create-room form */
-  .create-room-form .cr-row{flex-direction:column}
-  .cr-field{min-width:unset;width:100%}
-  .cr-btn{width:100%}
-
-  /* Auth on tiny phones */
-  .auth-wrap{padding:1.25rem .75rem}
-
-  /* Profile stats */
-  .pstat-val{font-size:1.3rem}
 }

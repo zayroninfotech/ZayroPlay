@@ -7,14 +7,6 @@
       "runtimeArgs": ["manage.py", "runserver", "8080"],
       "port": 8080,
       "cwd": "C:\\Zayron\\Games"
-    },
-    {
-      "name": "ZayroPlay",
-      "runtimeExecutable": "python",
-      "runtimeArgs": ["manage.py", "runserver", "8000"],
-      "port": 8000,
-      "autoPort": false,
-      "cwd": "C:\\Zayron\\ZayroPlay"
     }
   ]
 }

@@ -13,10 +13,10 @@
   </div>
 
   <!-- Game Tabs -->
-  <div class="d-flex justify-content-center gap-2 mb-5 flex-wrap">
+  <div class="d-flex justify-content-center gap-3 mb-5">
     {% for g in games %}
     <a href="{% url 'leaderboard' %}?game={{ g.id }}"
-       class="btn {% if g.id == game_id %}btn-glow{% else %}btn-outline-glow{% endif %} px-3 py-2">
+       class="btn {% if g.id == game_id %}btn-glow{% else %}btn-outline-glow{% endif %} px-4">
       {{ g.emoji }} {{ g.name }}
     </a>
     {% endfor %}

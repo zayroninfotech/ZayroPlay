@@ -13,12 +13,11 @@
 ══════════════════════════════════════════════════════ */
 
 /* ── HERO ──────────────────────────────────────────── */
-.zp-hero{position:relative;padding:5.5rem 0 3rem;overflow:hidden;min-height:560px;display:flex;align-items:center}
-.zp-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 70% 50%,#4c1d9520,transparent),radial-gradient(ellipse 50% 80% at 10% 90%,#f9731612,transparent);pointer-events:none}
-.zp-hero-grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(124,58,237,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(124,58,237,0.04) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;mask-image:radial-gradient(ellipse 70% 80% at 70% 40%,black,transparent)}
+.zp-hero{position:relative;padding:5.5rem 0 3rem;overflow:hidden;min-height:520px;display:flex;align-items:center}
+.zp-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 70% 50%,#4c1d9518,transparent),radial-gradient(ellipse 50% 80% at 10% 90%,#f9731610,transparent);pointer-events:none}
 .zp-hero-inner{display:flex;align-items:center;gap:2rem;flex-wrap:wrap;width:100%}
 .zp-hero-left{flex:1;min-width:300px;z-index:1}
-.zp-hero-right{flex:0 0 auto;z-index:1;position:relative}
+.zp-hero-right{flex:0 0 auto;z-index:1}
 
 .zp-eyebrow{display:inline-flex;align-items:center;gap:.5rem;background:linear-gradient(90deg,#7c3aed22,#f9731622);border:1px solid #7c3aed44;border-radius:2rem;padding:.35rem 1rem;color:#c4b5fd;font-size:.78rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:1.25rem}
 .zp-eyebrow i{color:#f97316}
@@ -27,90 +26,40 @@
 .zp-h1 .grad{background:linear-gradient(135deg,#a78bfa 0%,#f97316 50%,#fbbf24 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .zp-tagline{font-family:'Orbitron',sans-serif;font-size:clamp(1rem,2.2vw,1.4rem);color:#64748b;margin-bottom:1.2rem}
 .zp-tagline .hi{color:#f97316}
-.zp-desc{color:#94a3b8;font-size:.97rem;line-height:1.75;max-width:520px;margin-bottom:1.5rem}
 
-/* Hero trust badges */
-.zp-trust{display:flex;flex-wrap:wrap;gap:.6rem;margin-bottom:1.75rem}
-.zp-trust-badge{display:inline-flex;align-items:center;gap:.4rem;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:2rem;padding:.3rem .85rem;color:#94a3b8;font-size:.75rem;font-weight:600}
-.zp-trust-badge span{font-size:.85rem}
+.zp-desc{color:#94a3b8;font-size:.97rem;line-height:1.75;max-width:520px;margin-bottom:2rem}
 
 .zp-btns{display:flex;gap:.75rem;flex-wrap:wrap}
-.btn-glow{background:linear-gradient(135deg,#7c3aed,#a855f7);border:none;border-radius:.75rem;padding:.75rem 1.75rem;color:#fff;font-weight:700;font-size:.95rem;text-decoration:none;display:inline-flex;align-items:center;gap:.5rem;box-shadow:0 0 24px #7c3aed66;transition:all .25s}
-.btn-glow:hover{box-shadow:0 0 40px #7c3aed99;transform:translateY(-2px);color:#fff}
+.btn-glow{background:linear-gradient(135deg,#7c3aed,#a855f7);border:none;border-radius:.75rem;padding:.75rem 1.75rem;color:#fff;font-weight:700;font-size:.95rem;text-decoration:none;display:inline-flex;align-items:center;gap:.5rem;box-shadow:0 0 20px #7c3aed55;transition:all .25s}
+.btn-glow:hover{box-shadow:0 0 35px #7c3aed99;transform:translateY(-2px);color:#fff}
 .btn-wire{background:transparent;border:2px solid #7c3aed88;border-radius:.75rem;padding:.7rem 1.5rem;color:#a78bfa;font-weight:700;font-size:.95rem;text-decoration:none;display:inline-flex;align-items:center;gap:.5rem;transition:all .25s}
 .btn-wire:hover{background:#7c3aed22;border-color:#a78bfa;color:#c4b5fd}
 
-/* Canvas wrap + frame */
-.zp-canvas-wrap{position:relative;display:inline-block;padding:36px 20px 36px 20px}
-.zp-canvas-frame{position:relative;border-radius:1.25rem;overflow:hidden;box-shadow:0 0 60px rgba(124,58,237,0.45),0 0 120px rgba(124,58,237,0.15)}
-.zp-canvas-frame canvas{display:block;border-radius:1.25rem}
-.zp-canvas-ring{position:absolute;inset:-6px;border-radius:1.5rem;border:1.5px solid rgba(167,139,250,0.25);pointer-events:none;animation:ring-pulse 3s ease-in-out infinite}
-.zp-canvas-ring2{position:absolute;inset:-14px;border-radius:1.75rem;border:1px solid rgba(124,58,237,0.12);pointer-events:none;animation:ring-pulse 3s ease-in-out infinite .8s}
-@keyframes ring-pulse{0%,100%{opacity:.4;transform:scale(1)}50%{opacity:1;transform:scale(1.01)}}
-
-/* Floating badges */
-.zp-float-badge{position:absolute;display:flex;align-items:center;gap:.45rem;background:rgba(8,6,18,0.92);border:1px solid;border-radius:.75rem;padding:.5rem 1rem;font-size:.76rem;font-weight:700;backdrop-filter:blur(16px);white-space:nowrap;z-index:10;box-shadow:0 6px 24px rgba(0,0,0,0.5);animation:fb-float 3s ease-in-out infinite alternate}
-/* top-left */
-.zp-float-badge.live{top:8px;left:-10px;border-color:#22c55e55;color:#22c55e;background:rgba(6,18,10,0.92);animation-delay:0s}
-/* top-right */
-.zp-float-badge.trophy{top:8px;right:-10px;border-color:#fbbf2455;color:#fbbf24;background:rgba(18,14,4,0.92);animation-delay:.9s}
-/* bottom-left */
-.zp-float-badge.vs{bottom:8px;left:-10px;border-color:#a78bfa55;color:#a78bfa;background:rgba(14,8,28,0.92);animation-delay:.5s}
-/* bottom-right */
-.zp-float-badge.games{bottom:8px;right:-10px;border-color:#06b6d455;color:#06b6d4;background:rgba(4,14,18,0.92);animation-delay:1.3s}
-
-@keyframes fb-float{from{transform:translateY(0)}to{transform:translateY(-7px)}}
-.zp-float-dot{width:7px;height:7px;border-radius:50%;background:currentColor;box-shadow:0 0 6px currentColor;flex-shrink:0;animation:ldot 1.2s ease-in-out infinite}
-
-/* ── GAME TICKER ───────────────────────────────────── */
-.zp-ticker{background:linear-gradient(90deg,#0a0618,#120d2e,#0a0618);border-top:1px solid #4c1d9530;border-bottom:1px solid #4c1d9530;overflow:hidden;padding:.6rem 0}
-.zp-ticker-track{display:flex;gap:0;animation:ticker-scroll 28s linear infinite}
-.zp-ticker-track:hover{animation-play-state:paused}
-.zp-ticker-item{display:inline-flex;align-items:center;gap:.5rem;padding:0 2rem;color:#475569;font-size:.78rem;font-weight:600;white-space:nowrap;text-transform:uppercase;letter-spacing:.08em}
-.zp-ticker-item span{font-size:1rem}
-.zp-ticker-sep{color:#4c1d9566;margin:0 .25rem}
-@keyframes ticker-scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-
 /* ── STATS BAR ─────────────────────────────────────── */
-.zp-statsbar{background:linear-gradient(90deg,#0f0a1e,#1a1040,#0f0a1e);border-top:1px solid #4c1d9533;border-bottom:1px solid #4c1d9533}
-.zp-statsbar-inner{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;padding:1rem 1rem}
-.zp-sb-item{display:flex;flex-direction:column;align-items:center;padding:.5rem 2.5rem;gap:.1rem}
-.zp-sb-num{font-family:'Orbitron',sans-serif;font-size:1.8rem;font-weight:900;line-height:1;display:flex;align-items:center;gap:.4rem}
-.zp-sb-lbl{font-size:.65rem;color:#475569;text-transform:uppercase;letter-spacing:.1em;white-space:nowrap;margin-top:.2rem}
-.zp-sb-div{width:1px;height:44px;background:linear-gradient(180deg,transparent,#4c1d9555,transparent)}
+.zp-statsbar{background:linear-gradient(90deg,#0f0a1e,#1e1b4b,#0f0a1e);border-top:1px solid #4c1d9533;border-bottom:1px solid #4c1d9533}
+.zp-statsbar-inner{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;padding:.9rem 1rem}
+.zp-sb-item{display:flex;flex-direction:column;align-items:center;padding:.4rem 2.5rem;gap:.1rem}
+.zp-sb-num{font-family:'Orbitron',sans-serif;font-size:1.6rem;font-weight:900;line-height:1;display:flex;align-items:center;gap:.4rem}
+.zp-sb-lbl{font-size:.65rem;color:#475569;text-transform:uppercase;letter-spacing:.1em;white-space:nowrap;margin-top:.15rem}
+.zp-sb-div{width:1px;height:40px;background:#4c1d9555}
 .live-dot{display:inline-block;width:9px;height:9px;background:#22c55e;border-radius:50%;box-shadow:0 0 8px #22c55e88;animation:ldot 1.4s ease-in-out infinite}
 @keyframes ldot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.7)}}
 
 /* ── SECTION LABELS ────────────────────────────────── */
 .sec-eyebrow{display:inline-block;background:#7c3aed22;border:1px solid #7c3aed55;border-radius:2rem;padding:.25rem .9rem;color:#a78bfa;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.75rem}
 .sec-title{font-family:'Orbitron',sans-serif;font-size:clamp(1.4rem,3vw,2rem);font-weight:900;color:#f1f5f9;margin-bottom:.5rem}
-.sec-title-line{display:inline-block;position:relative}
-.sec-title-line::after{content:'';position:absolute;bottom:-6px;left:0;right:0;height:2px;background:linear-gradient(90deg,#7c3aed,#f97316);border-radius:2px}
 .sec-sub{color:#64748b;font-size:.9rem;margin-bottom:2.5rem}
-
-/* ── FEATURE CARDS SECTION ─────────────────────────── */
-.features-section{padding:5rem 0;background:linear-gradient(180deg,#080612,#0a0a1a)}
-.features-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1.25rem}
-.feat-card{position:relative;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:1.25rem;padding:1.75rem 1.5rem;transition:transform .3s,border-color .3s,box-shadow .3s;overflow:hidden}
-.feat-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,var(--fc,#7c3aed)0a,transparent 70%);pointer-events:none}
-.feat-card:hover{transform:translateY(-5px);border-color:color-mix(in srgb,var(--fc,#7c3aed) 40%,transparent);box-shadow:0 12px 40px color-mix(in srgb,var(--fc,#7c3aed) 15%,transparent)}
-.feat-icon{width:52px;height:52px;border-radius:1rem;display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:1.1rem;background:color-mix(in srgb,var(--fc,#7c3aed) 20%,transparent);border:1px solid color-mix(in srgb,var(--fc,#7c3aed) 30%,transparent)}
-.feat-title{font-family:'Orbitron',sans-serif;font-size:.9rem;font-weight:800;color:#f1f5f9;margin-bottom:.5rem}
-.feat-desc{color:#64748b;font-size:.8rem;line-height:1.6;margin:0}
 
 /* ── GAME CARDS ────────────────────────────────────── */
 .games-section{padding:5rem 0}
 .games-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.5rem}
 
 .gcard{position:relative;background:#0d0b1e;border:1px solid #1e1b4b;border-radius:1.25rem;overflow:hidden;transition:transform .3s,border-color .3s,box-shadow .3s;cursor:pointer}
-.gcard::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.03) 0%,transparent 50%);opacity:0;transition:opacity .3s;pointer-events:none;border-radius:1.25rem}
 .gcard:hover{transform:translateY(-6px);border-color:var(--gc);box-shadow:0 12px 40px color-mix(in srgb,var(--gc) 25%,transparent)}
-.gcard:hover::after{opacity:1}
-.gcard-top{position:relative;height:140px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,color-mix(in srgb,var(--gc) 18%,#0d0b1e),#0d0b1e)}
+.gcard-top{position:relative;height:130px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,color-mix(in srgb,var(--gc) 15%,#0d0b1e),#0d0b1e)}
 .gcard-top::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,#0d0b1e)}
-.gcard-emoji{font-size:3.5rem;position:relative;z-index:1;filter:drop-shadow(0 0 24px var(--gc));transition:transform .3s}
-.gcard:hover .gcard-emoji{transform:scale(1.15) rotate(-5deg)}
-.gcard-badge{position:absolute;top:.75rem;right:.75rem;background:var(--gc);color:#fff;font-size:.65rem;font-weight:700;padding:.2rem .6rem;border-radius:1rem;text-transform:uppercase;letter-spacing:.06em;z-index:2;box-shadow:0 0 12px color-mix(in srgb,var(--gc) 50%,transparent)}
+.gcard-emoji{font-size:3.5rem;position:relative;z-index:1;filter:drop-shadow(0 0 20px var(--gc))}
+.gcard-badge{position:absolute;top:.75rem;right:.75rem;background:var(--gc);color:#fff;font-size:.65rem;font-weight:700;padding:.2rem .55rem;border-radius:1rem;text-transform:uppercase;letter-spacing:.06em;z-index:2}
 .gcard-diff{position:absolute;top:.75rem;left:.75rem;background:#0d0b1e99;border:1px solid #ffffff1a;color:#94a3b8;font-size:.65rem;padding:.2rem .55rem;border-radius:1rem;z-index:2}
 
 .gcard-body{padding:1.25rem}
@@ -120,93 +69,49 @@
 .gcard-scores{background:#ffffff05;border:1px solid #ffffff08;border-radius:.6rem;padding:.6rem .8rem;margin-bottom:1rem}
 .gcard-scores-hd{font-size:.68rem;color:#f59e0b;font-weight:700;text-transform:uppercase;letter-spacing:.07em;margin-bottom:.4rem}
 .gcard-score-row{display:flex;align-items:center;gap:.5rem;font-size:.78rem;padding:.15rem 0}
-.gsr-rank{color:#7c3aed;font-weight:800;width:14px}
+.gsr-rank{color:#4c1d95;font-weight:800;width:14px}
 .gsr-name{flex:1;color:#94a3b8;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .gsr-val{color:#fbbf24;font-weight:700;font-family:'Orbitron',sans-serif;font-size:.75rem}
 .gcard-no-scores{color:#334155;font-size:.78rem;text-align:center;padding:.4rem 0}
 
 .gcard-actions{display:flex;gap:.5rem}
-.gbtn-play{flex:1;background:linear-gradient(135deg,var(--gc),color-mix(in srgb,var(--gc) 70%,#fff));border:none;border-radius:.6rem;padding:.65rem;color:#fff;font-weight:700;font-size:.85rem;text-decoration:none;text-align:center;display:flex;align-items:center;justify-content:center;gap:.4rem;transition:opacity .2s,transform .15s;box-shadow:0 4px 16px color-mix(in srgb,var(--gc) 30%,transparent)}
-.gbtn-play:hover{opacity:.88;transform:scale(1.02);color:#fff}
-.gbtn-lb{background:#ffffff08;border:1px solid #ffffff15;border-radius:.6rem;padding:.65rem .8rem;color:#64748b;font-size:.8rem;text-decoration:none;display:flex;align-items:center;gap:.3rem;transition:all .2s}
+.gbtn-play{flex:1;background:linear-gradient(135deg,var(--gc),color-mix(in srgb,var(--gc) 70%,#fff));border:none;border-radius:.6rem;padding:.6rem;color:#fff;font-weight:700;font-size:.85rem;text-decoration:none;text-align:center;display:flex;align-items:center;justify-content:center;gap:.4rem;transition:opacity .2s,transform .1s}
+.gbtn-play:hover{opacity:.85;transform:scale(1.02);color:#fff}
+.gbtn-lb{background:#ffffff08;border:1px solid #ffffff15;border-radius:.6rem;padding:.6rem .75rem;color:#64748b;font-size:.8rem;text-decoration:none;display:flex;align-items:center;gap:.3rem;transition:all .2s}
 .gbtn-lb:hover{background:#7c3aed22;border-color:#7c3aed;color:#a78bfa}
 
 /* ── MULTIPLAYER BANNER ────────────────────────────── */
-.mp-banner{position:relative;overflow:hidden;padding:5.5rem 0;background:#080612}
-.mp-banner::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 90% at 50% 50%,#4c1d9518,transparent);pointer-events:none}
-.mp-banner::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,#7c3aed44,transparent)}
-.mp-banner-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center}
+.mp-banner{position:relative;overflow:hidden;padding:5rem 0;background:#080612}
+.mp-banner::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 90% at 50% 50%,#4c1d9515,transparent);pointer-events:none}
+.mp-banner-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center}
 .mp-game-pills{display:flex;flex-wrap:wrap;gap:.6rem;margin-bottom:1.5rem}
-.mp-pill{display:flex;align-items:center;gap:.5rem;background:#1e1b4b;border:1px solid #4c1d9544;border-radius:2rem;padding:.4rem 1rem;color:#c4b5fd;font-size:.82rem;font-weight:600;transition:all .25s;cursor:default}
+.mp-pill{display:flex;align-items:center;gap:.5rem;background:#1e1b4b;border:1px solid #4c1d9544;border-radius:2rem;padding:.4rem 1rem;color:#c4b5fd;font-size:.82rem;font-weight:600;transition:all .25s}
 .mp-pill:hover{background:#7c3aed33;border-color:#7c3aed;transform:scale(1.05)}
-.mp-features{display:flex;flex-direction:column;gap:.9rem}
-.mp-feat{display:flex;align-items:center;gap:.85rem;color:#94a3b8;font-size:.9rem}
-.mp-feat-icon{width:38px;height:38px;border-radius:.6rem;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;border:1px solid rgba(255,255,255,0.06)}
-.mp-feat strong{color:#e2e8f0;margin-right:.25rem}
-
-/* Redesigned MP visual */
-.mp-visual{background:linear-gradient(135deg,#1a1040,#0f0a2a);border:1px solid #4c1d9555;border-radius:1.5rem;padding:2rem;text-align:center;position:relative;overflow:hidden}
-.mp-visual::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,#7c3aed0a,transparent);pointer-events:none}
-.mp-icons-row{display:flex;justify-content:center;gap:1rem;font-size:2.5rem;margin-bottom:1.25rem;flex-wrap:wrap}
-.mp-icons-row span{filter:drop-shadow(0 0 14px #7c3aed);animation:icon-bob .8s ease-in-out infinite alternate;cursor:default}
+.mp-features{display:flex;flex-direction:column;gap:.75rem}
+.mp-feat{display:flex;align-items:center;gap:.75rem;color:#94a3b8;font-size:.9rem}
+.mp-feat-icon{width:36px;height:36px;border-radius:.5rem;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+.mp-visual{background:#1e1b4b;border:1px solid #4c1d95;border-radius:1.25rem;padding:2rem;text-align:center}
+.mp-icons-row{display:flex;justify-content:center;gap:1rem;font-size:2.5rem;margin-bottom:1rem;flex-wrap:wrap}
+.mp-icons-row span{filter:drop-shadow(0 0 12px #7c3aed);animation:icon-bob .8s ease-in-out infinite alternate}
 .mp-icons-row span:nth-child(2){animation-delay:.15s}
 .mp-icons-row span:nth-child(3){animation-delay:.3s}
 .mp-icons-row span:nth-child(4){animation-delay:.45s}
 .mp-icons-row span:nth-child(5){animation-delay:.6s}
-@keyframes icon-bob{from{transform:translateY(0)}to{transform:translateY(-10px)}}
-.mp-cta-label{font-family:'Orbitron',sans-serif;color:#a78bfa;font-size:.85rem;margin-bottom:.75rem;letter-spacing:.06em}
-.mp-player-stack{display:flex;justify-content:center;margin-bottom:.6rem}
-.mp-av{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#2d1b69,#1e1b4b);border:2px solid #7c3aed;display:flex;align-items:center;justify-content:center;font-size:1.1rem;margin-left:-.5rem;box-shadow:0 0 10px #7c3aed44}
-.mp-av:first-child{margin-left:0}
-.mp-highlights{margin-top:1.25rem;padding:.9rem;background:#7c3aed0d;border:1px solid #7c3aed22;border-radius:.875rem}
-.mp-hl-label{font-family:'Orbitron',sans-serif;color:#a78bfa;font-size:.72rem;margin-bottom:.65rem;letter-spacing:.08em}
-.mp-hl-grid{display:flex;justify-content:space-around}
-.mp-hl-item{text-align:center}
-.mp-hl-num{font-family:'Orbitron',sans-serif;font-size:1.25rem;font-weight:900}
-.mp-hl-sub{color:#475569;font-size:.68rem;margin-top:.15rem}
-
-/* ── CTA SECTION ───────────────────────────────────── */
-.cta-section{padding:5rem 0}
-.cta-box{position:relative;background:linear-gradient(135deg,rgba(124,58,237,0.18),rgba(249,115,22,0.12),rgba(124,58,237,0.18));border:1px solid rgba(167,139,250,0.2);border-radius:1.75rem;padding:4rem 3rem;overflow:hidden;text-align:center}
-.cta-box::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 70% at 50% 50%,rgba(124,58,237,0.08),transparent);pointer-events:none}
-.cta-box::after{content:'';position:absolute;top:-1px;left:20%;right:20%;height:1px;background:linear-gradient(90deg,transparent,rgba(167,139,250,0.5),transparent)}
-.cta-title{font-family:'Orbitron',sans-serif;font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:900;color:#f1f5f9;margin-bottom:.75rem;position:relative}
-.cta-sub{color:#94a3b8;font-size:1rem;margin-bottom:2rem;position:relative;max-width:480px;margin-left:auto;margin-right:auto}
-.cta-btns{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;position:relative}
+@keyframes icon-bob{from{transform:translateY(0)}to{transform:translateY(-8px)}}
+.mp-cta-label{font-family:'Orbitron',sans-serif;color:#a78bfa;font-size:.85rem;margin-bottom:.75rem}
+.mp-player-stack{display:flex;justify-content:center;gap:-.5rem;margin-bottom:1rem}
+.mp-av{width:36px;height:36px;border-radius:50%;background:#2d1b69;border:2px solid #7c3aed;display:flex;align-items:center;justify-content:center;font-size:1.1rem;margin-left:-.4rem}
 
 /* ── FOOTER STRIP ──────────────────────────────────── */
 .zp-footer-strip{background:linear-gradient(135deg,#1e1b4b,#0f0a1e);border-top:1px solid #4c1d9533;padding:1.5rem 0;text-align:center}
 .zp-footer-strip p{color:#334155;font-size:.82rem;margin:0}
 .zp-footer-strip a{color:#7c3aed;text-decoration:none}
 
-/* ── RESPONSIVE ────────────────────────────────────── */
-@media(max-width:991px){
+@media(max-width:768px){
   .mp-banner-grid{grid-template-columns:1fr}
+  .zp-sb-item{padding:.4rem 1.1rem}
   .zp-sb-div{display:none}
-  .features-grid{grid-template-columns:repeat(auto-fill,minmax(180px,1fr))}
-}
-@media(max-width:767px){
-  .zp-hero{padding:5rem 0 2.5rem;min-height:auto}
-  .zp-hero-inner{flex-direction:column;gap:1.5rem}
-  .zp-hero-left{min-width:unset;width:100%}
-  .zp-hero-right{width:100%;display:flex;justify-content:center}
-  .zp-hero-right canvas{width:100%!important;max-width:340px!important}
-  .zp-float-badge{display:none}
-  .zp-sb-item{padding:.4rem .9rem}
-  .zp-sb-num{font-size:1.4rem}
-  .zp-statsbar-inner{gap:0}
-  .games-section,.features-section,.mp-banner,.cta-section{padding:3rem 0}
-  .games-grid{grid-template-columns:repeat(auto-fill,minmax(min(280px,100%),1fr))}
-  .cta-box{padding:2.5rem 1.5rem}
-  .zp-btns .btn-glow,.zp-btns .btn-wire{font-size:.85rem;padding:.65rem 1.2rem}
-}
-@media(max-width:480px){
-  .zp-hero-right{display:none}
-  .zp-sb-item{padding:.35rem .6rem}
-  .zp-sb-num{font-size:1.2rem}
-  .zp-h1{font-size:clamp(1.6rem,8vw,2.4rem)}
-  .zp-tagline{font-size:.95rem}
-  .features-grid{grid-template-columns:1fr 1fr}
+  .zp-hero-right canvas{max-width:340px!important}
 }
 </style>
 {% endblock %}
@@ -215,90 +120,30 @@
 
 <!-- ══ HERO ══════════════════════════════════════════════════════════════════ -->
 <section class="zp-hero">
-  <div class="zp-hero-grid-bg"></div>
   <div class="container zp-hero-inner">
     <div class="zp-hero-left">
       <div class="zp-eyebrow"><i class="bi bi-controller-fill"></i>Powered by Zayron Infotech Pvt. Ltd.</div>
-      <h1 class="zp-h1">Welcome to <span class="grad">ZayroPlay</span></h1>
+<h1 class="zp-h1">Welcome to <span class="grad">ZayroPlay</span></h1>
       <p class="zp-tagline">Your Ultimate <span class="hi">Gaming Arena</span></p>
       <p class="zp-desc">
         India's next-generation browser gaming platform. Play solo arcade classics,
         battle friends in real-time multiplayer, chat live, and climb the global
         leaderboard — all free, no downloads.
       </p>
-      <div class="zp-trust">
-        <span class="zp-trust-badge"><span>🆓</span> Always Free</span>
-        <span class="zp-trust-badge"><span>⚡</span> No Downloads</span>
-        <span class="zp-trust-badge"><span>🌐</span> Play in Browser</span>
-        <span class="zp-trust-badge"><span>🔒</span> Safe & Secure</span>
-      </div>
       <div class="zp-btns">
         <a href="#games"              class="btn-glow"><i class="bi bi-play-fill"></i>Play Now</a>
         <a href="{% url 'multi_lobby' %}" class="btn-wire"><i class="bi bi-people-fill"></i>Multiplayer</a>
         {% if not user.is_authenticated %}
-        <a href="{% url 'register' %}" class="btn-wire" style="border-color:#f9731666;color:#f97316"><i class="bi bi-person-plus"></i>Join Free</a>
+        <a href="{% url 'register' %}"   class="btn-wire" style="border-color:#f9731666;color:#f97316"><i class="bi bi-person-plus"></i>Join Free</a>
         {% endif %}
       </div>
     </div>
     <div class="zp-hero-right">
-      <div class="zp-canvas-wrap">
-        <!-- Glow rings around canvas -->
-        <div class="zp-canvas-frame">
-          <div class="zp-canvas-ring"></div>
-          <div class="zp-canvas-ring2"></div>
-          <canvas id="heroAnimCanvas" data-logo="{% static 'img/game5.png' %}"
-                  style="width:480px;max-width:100%"></canvas>
-        </div>
-        <!-- Top-left: Live Now -->
-        <div class="zp-float-badge live">
-          <span class="zp-float-dot"></span> Live Now
-        </div>
-        <!-- Top-right: Leaderboard -->
-        <div class="zp-float-badge trophy">
-          🏆 Leaderboard
-        </div>
-        <!-- Bottom-left: Multiplayer -->
-        <div class="zp-float-badge vs">
-          <i class="bi bi-people-fill"></i> Multiplayer
-        </div>
-        <!-- Bottom-right: 11 Games -->
-        <div class="zp-float-badge games">
-          🕹️ 11 Games
-        </div>
-      </div>
+      <canvas id="heroAnimCanvas" data-logo="{% static 'img/game5.png' %}"
+              style="width:480px;max-width:100%;border-radius:1rem"></canvas>
     </div>
   </div>
 </section>
-
-<!-- ══ GAME TICKER ════════════════════════════════════════════════════════════ -->
-<div class="zp-ticker">
-  <div class="zp-ticker-track">
-    <!-- duplicated for infinite loop -->
-    <span class="zp-ticker-item"><span>🫧</span> Bubble Shooter <span class="zp-ticker-sep">✦</span></span>
-    <span class="zp-ticker-item"><span>🍬</span> Candy Crush <span class="zp-ticker-sep">✦</span></span>
-    <span class="zp-ticker-item"><span>🐍</span> Snake <span class="zp-ticker-sep">✦</span></span>
-    <span class="zp-ticker-item"><span>🐦</span> Flappy Bird <span class="zp-ticker-sep">✦</span></span>
-    <span class="zp-ticker-item"><span>🃏</span> Memory Match <span class="zp-ticker-sep">✦</span></span>
-    <span class="zp-ticker-item"><span>🔨</span> Whack-a-Mole <span class="zp-ticker-sep">✦</span></span>
-    <span class="zp-ticker-item"><span>♟️</span> Chess <span class="zp-ticker-sep">✦</span></span>
-    <span class="zp-ticker-item"><span>🎲</span> Ludo <span class="zp-ticker-sep">✦</span></span>
-    <span class="zp-ticker-item"><span>🐍</span> Snake & Ladder <span class="zp-ticker-sep">✦</span></span>
-    <span class="zp-ticker-item"><span>🎱</span> 8 Ball Pool <span class="zp-ticker-sep">✦</span></span>
-    <span class="zp-ticker-item"><span>🪙</span> Carrom Board <span class="zp-ticker-sep">✦</span></span>
-    <!-- duplicate set -->
-    <span class="zp-ticker-item"><span>🫧</span> Bubble Shooter <span class="zp-ticker-sep">✦</span></span>
-    <span class="zp-ticker-item"><span>🍬</span> Candy Crush <span class="zp-ticker-sep">✦</span></span>
-    <span class="zp-ticker-item"><span>🐍</span> Snake <span class="zp-ticker-sep">✦</span></span>
-    <span class="zp-ticker-item"><span>🐦</span> Flappy Bird <span class="zp-ticker-sep">✦</span></span>
-    <span class="zp-ticker-item"><span>🃏</span> Memory Match <span class="zp-ticker-sep">✦</span></span>
-    <span class="zp-ticker-item"><span>🔨</span> Whack-a-Mole <span class="zp-ticker-sep">✦</span></span>
-    <span class="zp-ticker-item"><span>♟️</span> Chess <span class="zp-ticker-sep">✦</span></span>
-    <span class="zp-ticker-item"><span>🎲</span> Ludo <span class="zp-ticker-sep">✦</span></span>
-    <span class="zp-ticker-item"><span>🐍</span> Snake & Ladder <span class="zp-ticker-sep">✦</span></span>
-    <span class="zp-ticker-item"><span>🎱</span> 8 Ball Pool <span class="zp-ticker-sep">✦</span></span>
-    <span class="zp-ticker-item"><span>🪙</span> Carrom Board <span class="zp-ticker-sep">✦</span></span>
-  </div>
-</div>
 
 <!-- ══ STATS BAR ═════════════════════════════════════════════════════════════ -->
 <div class="zp-statsbar">
@@ -330,56 +175,13 @@
   </div>
 </div>
 
-<!-- ══ FEATURES SECTION ══════════════════════════════════════════════════════ -->
-<section class="features-section">
-  <div class="container">
-    <div class="text-center mb-5">
-      <div class="sec-eyebrow">✨ Why ZayroPlay</div>
-      <h2 class="sec-title"><span class="sec-title-line">Everything a Gamer Needs</span></h2>
-      <p class="sec-sub" style="margin-top:.75rem">Built for speed, fun, and real competition</p>
-    </div>
-    <div class="features-grid">
-      <div class="feat-card" style="--fc:#7c3aed">
-        <div class="feat-icon">🕹️</div>
-        <div class="feat-title">Instant Play</div>
-        <div class="feat-desc">No login needed for solo games. Jump in and start playing in seconds — zero friction.</div>
-      </div>
-      <div class="feat-card" style="--fc:#f97316">
-        <div class="feat-icon">⚡</div>
-        <div class="feat-title">Zero Lag</div>
-        <div class="feat-desc">WebSocket-powered real-time multiplayer with sub-100ms sync across all game rooms.</div>
-      </div>
-      <div class="feat-card" style="--fc:#22c55e">
-        <div class="feat-icon">💬</div>
-        <div class="feat-title">Live Chat</div>
-        <div class="feat-desc">Every multiplayer room has built-in live chat. Talk trash, plan strategy, make friends.</div>
-      </div>
-      <div class="feat-card" style="--fc:#06b6d4">
-        <div class="feat-icon">🏆</div>
-        <div class="feat-title">Leaderboards</div>
-        <div class="feat-desc">Compete globally and see your name climb the charts in every solo arcade game.</div>
-      </div>
-      <div class="feat-card" style="--fc:#ec4899">
-        <div class="feat-icon">👤</div>
-        <div class="feat-title">Custom Avatar</div>
-        <div class="feat-desc">Pick your emoji avatar, track your wins and losses, and build your player profile.</div>
-      </div>
-      <div class="feat-card" style="--fc:#fbbf24">
-        <div class="feat-icon">📱</div>
-        <div class="feat-title">Mobile Ready</div>
-        <div class="feat-desc">Fully responsive design — play on any device, any screen size, anywhere.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ══ GAMES ═════════════════════════════════════════════════════════════════ -->
 <section class="games-section" id="games">
   <div class="container">
     <div class="text-center mb-5">
       <div class="sec-eyebrow">🕹️ Solo Arcade</div>
-      <h2 class="sec-title"><span class="sec-title-line">Play Instantly</span></h2>
-      <p class="sec-sub" style="margin-top:.75rem">No account needed — pick a game and start playing right now</p>
+      <h2 class="sec-title">Play Instantly</h2>
+      <p class="sec-sub">No account needed — pick a game and start playing right now</p>
     </div>
     <div class="games-grid">
       {% for g in games %}
@@ -433,22 +235,10 @@
           <div class="mp-pill">🪙 Carrom Board</div>
         </div>
         <div class="mp-features">
-          <div class="mp-feat">
-            <div class="mp-feat-icon" style="background:#7c3aed18;border-color:#7c3aed33">💬</div>
-            <div><strong>Live Chat</strong> in every game room with all players</div>
-          </div>
-          <div class="mp-feat">
-            <div class="mp-feat-icon" style="background:#f9731618;border-color:#f9731633">🔊</div>
-            <div><strong>Sound Effects</strong> unique to each game mode</div>
-          </div>
-          <div class="mp-feat">
-            <div class="mp-feat-icon" style="background:#10b98118;border-color:#10b98133">👤</div>
-            <div><strong>Custom Avatar</strong> + full win/loss stats tracking</div>
-          </div>
-          <div class="mp-feat">
-            <div class="mp-feat-icon" style="background:#06b6d418;border-color:#06b6d433">⚡</div>
-            <div><strong>WebSocket</strong> — zero lag real-time synchronization</div>
-          </div>
+          <div class="mp-feat"><div class="mp-feat-icon" style="background:#7c3aed22">💬</div>Live in-room chat with all players</div>
+          <div class="mp-feat"><div class="mp-feat-icon" style="background:#f9731622">🔊</div>Unique sound effects per game</div>
+          <div class="mp-feat"><div class="mp-feat-icon" style="background:#10b98122">👤</div>Custom avatar + win/loss stats</div>
+          <div class="mp-feat"><div class="mp-feat-icon" style="background:#06b6d422">⚡</div>WebSocket — zero lag real-time sync</div>
         </div>
         <div style="margin-top:2rem;display:flex;gap:.75rem;flex-wrap:wrap">
           <a href="{% url 'multi_lobby' %}" class="btn-glow"><i class="bi bi-people-fill"></i>Enter Lobby</a>
@@ -461,49 +251,21 @@
         <div class="mp-icons-row">
           <span>♟️</span><span>🎲</span><span>🎱</span><span>🐍</span><span>🪙</span>
         </div>
-        <div class="mp-cta-label">⚡ MULTIPLAYER ARENA — LIVE</div>
+        <div class="mp-cta-label">Multiplayer Arena — Live Now</div>
         <div class="mp-player-stack">
           {% for av in '🦊🐱🐶🦄🎯⭐' %}
           <div class="mp-av">{{ av }}</div>
           {% endfor %}
         </div>
-        <p style="color:#475569;font-size:.8rem;margin:.4rem 0 0">Players active in the arena</p>
-        <div class="mp-highlights">
-          <div class="mp-hl-label">🏆 PLATFORM HIGHLIGHTS</div>
-          <div class="mp-hl-grid">
-            <div class="mp-hl-item">
-              <div class="mp-hl-num" style="color:#f97316">11</div>
-              <div class="mp-hl-sub">Total Games</div>
-            </div>
-            <div class="mp-hl-item">
-              <div class="mp-hl-num" style="color:#22c55e">∞</div>
-              <div class="mp-hl-sub">Free Forever</div>
-            </div>
-            <div class="mp-hl-item">
-              <div class="mp-hl-num" style="color:#a78bfa">0</div>
-              <div class="mp-hl-sub">Downloads</div>
-            </div>
+        <p style="color:#475569;font-size:.8rem;margin:0">Join players already in the arena</p>
+        <div style="margin-top:1.25rem;padding:.75rem;background:#7c3aed11;border:1px solid #7c3aed33;border-radius:.75rem">
+          <div style="font-family:'Orbitron',sans-serif;color:#a78bfa;font-size:.75rem;margin-bottom:.5rem">🏆 PLATFORM HIGHLIGHTS</div>
+          <div style="display:flex;justify-content:space-around">
+            <div style="text-align:center"><div style="font-family:'Orbitron',sans-serif;color:#f97316;font-size:1.2rem;font-weight:900">11</div><div style="color:#475569;font-size:.7rem">Total Games</div></div>
+            <div style="text-align:center"><div style="font-family:'Orbitron',sans-serif;color:#22c55e;font-size:1.2rem;font-weight:900">∞</div><div style="color:#475569;font-size:.7rem">Free Forever</div></div>
+            <div style="text-align:center"><div style="font-family:'Orbitron',sans-serif;color:#a78bfa;font-size:1.2rem;font-weight:900">0</div><div style="color:#475569;font-size:.7rem">Downloads</div></div>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══ CTA SECTION ═══════════════════════════════════════════════════════════ -->
-<section class="cta-section">
-  <div class="container">
-    <div class="cta-box">
-      <p class="sec-eyebrow" style="margin-bottom:1rem">🚀 Ready to Play?</p>
-      <h2 class="cta-title">Your Next Win is<br>One Click Away</h2>
-      <p class="cta-sub">Join thousands of players on ZayroPlay. No downloads, no fees — just pure gaming fun.</p>
-      <div class="cta-btns">
-        <a href="#games" class="btn-glow" style="font-size:1rem;padding:.85rem 2.25rem"><i class="bi bi-play-circle-fill"></i>Start Playing Free</a>
-        {% if not user.is_authenticated %}
-        <a href="{% url 'register' %}" class="btn-wire" style="font-size:1rem;padding:.8rem 2rem"><i class="bi bi-person-plus"></i>Create Account</a>
-        {% else %}
-        <a href="{% url 'multi_lobby' %}" class="btn-wire" style="font-size:1rem;padding:.8rem 2rem"><i class="bi bi-people-fill"></i>Join Multiplayer</a>
-        {% endif %}
       </div>
     </div>
   </div>
