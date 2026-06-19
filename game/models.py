@@ -4,7 +4,6 @@ GAME_CHOICES = [
     ('bubble', 'Bubble Shooter'),
     ('candy',  'Candy Crush'),
     ('snake',  'Snake'),
-    ('flappy', 'Flappy Bird'),
     ('memory', 'Memory Match'),
     ('whack',  'Whack-a-Mole'),
 ]
