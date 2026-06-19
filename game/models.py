@@ -1,6 +1,7 @@
 from django.db import models
 
 GAME_CHOICES = [
+    ('bubble', 'Bubble Shooter'),
     ('candy',  'Candy Crush'),
     ('snake',  'Snake'),
     ('flappy', 'Flappy Bird'),
