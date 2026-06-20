@@ -39,6 +39,31 @@
     { color: '#f472b6', shadow: '#be185d', label: '🩷', name: 'pink' },
   ];
 
+  // ── Audio ─────────────────────────────────────────────────────────────────
+  let _actx = null;
+  function getACtx() { if (!_actx) _actx = new (window.AudioContext || window.webkitAudioContext)(); return _actx; }
+  function playPop(n) {
+    if (typeof window.zpSoundOn !== 'undefined' && !window.zpSoundOn) return;
+    try {
+      const ac = getACtx();
+      const count = Math.min(n, 6);
+      for (let i = 0; i < count; i++) {
+        setTimeout(() => {
+          const o = ac.createOscillator(), g = ac.createGain();
+          o.connect(g); g.connect(ac.destination);
+          o.type = 'sine';
+          const freq = 520 + Math.random() * 280;
+          o.frequency.setValueAtTime(freq, ac.currentTime);
+          o.frequency.exponentialRampToValueAtTime(freq * 0.5, ac.currentTime + 0.12);
+          g.gain.setValueAtTime(0.18, ac.currentTime);
+          g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.14);
+          o.start(ac.currentTime);
+          o.stop(ac.currentTime + 0.15);
+        }, i * 35);
+      }
+    } catch(e) {}
+  }
+
   // ── State ────────────────────────────────────────────────────────────────
   let board = [], score = 0, moves = 30, level = 1, target = 500, best = 0;
   let selected = null, gameActive = false, animId = null;
@@ -109,6 +134,7 @@
       }
       board[r][c] = null;
     });
+    playPop(matched.size);
     const matchSize = matched.size;
     const mult = Math.max(1, cascade);
     score += (pts[Math.min(matchSize, pts.length - 1)] || matchSize * 30) * mult * level;
