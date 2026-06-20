@@ -1,7 +1,9 @@
 // ── Bubble Shooter — ZayroPlay ───────────────────────────────────────────────
+(function(){
 'use strict';
 
 const canvas = document.getElementById('bubbleCanvas');
+if(!canvas) return;
 const ctx    = canvas.getContext('2d');
 
 const COLS   = 9;
@@ -444,3 +446,5 @@ document.getElementById('bSubmitBtn')?.addEventListener('click',async()=>{
 });
 
 window.zpSoundOn=true;
+window.bStartGame=startGame;
+})();
