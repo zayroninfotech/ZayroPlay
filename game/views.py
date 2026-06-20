@@ -7,12 +7,6 @@ from .models import ScoreBoard
 
 GAMES = [
     {
-        'id': 'bubble', 'name': 'Bubble Shooter', 'emoji': '🫧',
-        'description': 'Aim & shoot colourful bubbles. Match 3+ to pop them and clear the board!',
-        'color_from': '#7c3aed', 'color_to': '#ec4899',
-        'url': 'bubble', 'badge': 'Classic', 'badge_color': 'purple', 'difficulty': '★★☆',
-    },
-    {
         'id': 'candy', 'name': 'Candy Crush', 'emoji': '🍬',
         'description': 'Swap sweet candies to match 3 or more in a row and crush your high score!',
         'color_from': '#f59e0b', 'color_to': '#ef4444',
@@ -52,7 +46,6 @@ def home(request):
     return render(request, 'game/home.html', {'games': GAMES, 'tops': tops})
 
 
-def bubble(request): return render(request, 'game/bubble.html')
 def candy(request):  return render(request, 'game/candy.html')
 def snake(request):  return render(request, 'game/snake.html')
 def flappy(request): return render(request, 'game/flappy.html')
