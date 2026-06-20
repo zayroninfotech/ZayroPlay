@@ -41,9 +41,12 @@
 
   // ── Audio ─────────────────────────────────────────────────────────────────
   let _actx = null;
-  function getACtx() { if (!_actx) _actx = new (window.AudioContext || window.webkitAudioContext)(); return _actx; }
+  function getACtx() {
+    if (!_actx) _actx = new (window.AudioContext || window.webkitAudioContext)();
+    if (_actx.state === 'suspended') _actx.resume();
+    return _actx;
+  }
   function playPop(n) {
-    if (typeof window.zpSoundOn !== 'undefined' && !window.zpSoundOn) return;
     try {
       const ac = getACtx();
       const count = Math.min(n, 6);
@@ -55,14 +58,16 @@
           const freq = 520 + Math.random() * 280;
           o.frequency.setValueAtTime(freq, ac.currentTime);
           o.frequency.exponentialRampToValueAtTime(freq * 0.5, ac.currentTime + 0.12);
-          g.gain.setValueAtTime(0.18, ac.currentTime);
-          g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.14);
+          g.gain.setValueAtTime(0.22, ac.currentTime);
+          g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.15);
           o.start(ac.currentTime);
-          o.stop(ac.currentTime + 0.15);
-        }, i * 35);
+          o.stop(ac.currentTime + 0.16);
+        }, i * 40);
       }
     } catch(e) {}
   }
+  // Unlock AudioContext on first user interaction
+  document.addEventListener('click', () => { try { getACtx(); } catch(e){} }, { once: true });
 
   // ── State ────────────────────────────────────────────────────────────────
   let board = [], score = 0, moves = 30, level = 1, target = 500, best = 0;
