@@ -26,16 +26,22 @@ let animId       = null;
 let pendingSnap  = false;
 
 /* ── Audio ── */
-const AC = new (window.AudioContext || window.webkitAudioContext)();
+let AC = null;
+function getAC(){
+  if(!AC) try{ AC=new(window.AudioContext||window.webkitAudioContext)(); }catch(e){}
+  if(AC && AC.state==='suspended') AC.resume();
+  return AC;
+}
 function tone(f,t,type='sine',v=0.15){
   if(!window.zpSoundOn) return;
   try{
-    const o=AC.createOscillator(),g=AC.createGain();
-    o.connect(g);g.connect(AC.destination);
+    const ac=getAC(); if(!ac) return;
+    const o=ac.createOscillator(),g=ac.createGain();
+    o.connect(g);g.connect(ac.destination);
     o.type=type;o.frequency.value=f;
-    g.gain.setValueAtTime(v,AC.currentTime);
-    g.gain.exponentialRampToValueAtTime(0.001,AC.currentTime+t);
-    o.start();o.stop(AC.currentTime+t);
+    g.gain.setValueAtTime(v,ac.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001,ac.currentTime+t);
+    o.start();o.stop(ac.currentTime+t);
   }catch(e){}
 }
 function sndShoot(){ tone(300,.08,'triangle',.1); }
@@ -192,7 +198,7 @@ function shoot(){
   movesLeft--;
   window.zpSetMoves && window.zpSetMoves(movesLeft, level*30);
   sndShoot();
-  if(AC.state==='suspended') AC.resume();
+  getAC();
 }
 
 function updateProjectile(){
@@ -406,7 +412,7 @@ canvas.addEventListener('click',e=>{
   mouseX=e.clientX-r.left;
   mouseY=e.clientY-r.top;
   shoot();
-  if(AC.state==='suspended') AC.resume();
+  getAC();
 });
 canvas.addEventListener('touchmove',e=>{
   e.preventDefault();
